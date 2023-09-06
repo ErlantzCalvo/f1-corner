@@ -1,0 +1,44 @@
+---
+import '../styles/themeToggler.css'
+---
+<div id="themeToggler">
+<input type="checkbox" id="themeSwitch" name="theme-switch" class="theme-switch__input" />
+<label for="themeSwitch" class="theme-switch__label">
+    <span></span>
+</label>
+</div>
+  
+<script is:inline>
+const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+    }
+        return 'light';
+})();
+
+const isDarkMode = () => {
+    return theme !== 'light';
+}
+
+if (!isDarkMode()) {
+    document.getElementById("themeSwitch").checked = false;
+    document.documentElement.classList.remove('dark');
+} else {
+    document.getElementById("themeSwitch").checked = true;
+    document.documentElement.classList.add('dark');
+}
+
+window.localStorage.setItem('theme', theme);
+
+const handleToggleClick = () => {
+    const element = document.documentElement;
+    element.classList.toggle("dark");
+
+    localStorage.setItem("theme", isDarkMode() ? "dark" : "light");
+}
+
+document.getElementById("themeSwitch").addEventListener("change", handleToggleClick);
+</script>

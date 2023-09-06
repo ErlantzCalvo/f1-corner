@@ -1,0 +1,39 @@
+---
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+import { Image } from "astro:assets";
+import logo from "../../public/logo.svg";
+import '../styles/nav.css'
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+interface Link {
+	href: string;
+	text: string;
+}
+
+const links: Link[] = [
+	{ href: translatePath('/'), text: t('nav.home') },
+	{ href: translatePath('/ranking'), text: t('nav.ranking') },
+	{ href: translatePath('/qualifying'), text: t('nav.qualifying') },
+];
+---
+
+<header>
+	<nav aria-label="Main menu">
+        <a href="/" >
+            <Image src={logo} alt="logo: man with a wheel" width="32" height="32"/>
+        </a>
+		{
+			links.map(({ href, text }) => (
+				<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined}>
+					<strong>{text}</strong>
+				</a>
+			))
+		}
+        <ThemeToggle />
+	</nav>
+</header>
+

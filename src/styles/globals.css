@@ -1,0 +1,28 @@
+:root {
+    --primary-color: #990011;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
+}
+
+html {
+    --bkg-color: #FCF6F5;
+    --text-color: #3b3a3a;
+}
+
+html.dark {
+    --bkg-color: #121212;
+    --text-color: #FCF6F5;
+} 
+
+html {
+    font-family: system-ui, sans-serif;
+    background-color: var(--bkg-color);
+    background-size: 224px;
+}
+
+html.dark {
+    background-color: var(--bkg-color);
+    color: #fff;
+}
+  

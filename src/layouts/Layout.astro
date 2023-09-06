@@ -1,0 +1,37 @@
+--- 
+import Nav from '../components/Nav.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import { getLangFromUrl } from '../i18n/utils';
+import '../styles/globals.css';
+
+const lang = getLangFromUrl(Astro.url);
+
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<Nav />
+		<slot />
+		<footer>
+			<LanguagePicker />
+		</footer>
+	</body>
+</html>
+<style is:global>
+	
+</style>
