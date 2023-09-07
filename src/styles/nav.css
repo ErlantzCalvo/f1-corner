@@ -16,7 +16,7 @@
 	}
 
 	nav a {
-	    color: #FCF6F5;
+	    color: var(--secondary-color);
 	    line-height: 24px;
 	    transition: color 0.15s ease;
 	    display: inline-block;
@@ -27,12 +27,12 @@
         text-decoration: none;
 	}
 
-	nav a:hover {
+	nav > a:hover {
 	    color: #cfb8b4;
 	}
 
 	nav [aria-current='page'] {
-	    color: #FCF6F5;
+	    color: var(--secondary-color);
 	    font-weight: 400;
 	}
 
@@ -41,7 +41,7 @@
 	}
 
 	.github {
-	    color: #FCF6F5;
+	    color: var(--secondary-color);
 	    font-size: 0.9em;
 	    margin: 0;
 	    float: right;
