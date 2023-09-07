@@ -1,4 +1,5 @@
 ---
+import LanguagePicker from './LanguagePicker.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
 import { Image } from "astro:assets";
@@ -33,6 +34,7 @@ const links: Link[] = [
 				</a>
 			))
 		}
+		<LanguagePicker currentLang={lang} />
         <ThemeToggle />
 	</nav>
 </header>
