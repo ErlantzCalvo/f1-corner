@@ -19,11 +19,10 @@ const theme = (() => {
         return 'light';
 })();
 
-const isDarkMode = () => {
-    return theme !== 'light';
-}
+var isDarkMode = theme !== 'light';
 
-if (!isDarkMode()) {
+
+if (!isDarkMode) {
     document.getElementById("themeSwitch").checked = false;
     document.documentElement.classList.remove('dark');
 } else {
@@ -36,8 +35,8 @@ window.localStorage.setItem('theme', theme);
 const handleToggleClick = () => {
     const element = document.documentElement;
     element.classList.toggle("dark");
-
-    localStorage.setItem("theme", isDarkMode() ? "dark" : "light");
+    isDarkMode = !isDarkMode;
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
 }
 
 document.getElementById("themeSwitch").addEventListener("change", handleToggleClick);
