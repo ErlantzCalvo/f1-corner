@@ -6,6 +6,24 @@
     --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
 }
 
+main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    /* color: #990011; */
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
 html {
     --bkg-color: #FCF6F5;
     --text-color: #3b3a3a;
