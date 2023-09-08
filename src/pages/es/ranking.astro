@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Leaderboard from '../../components/Leaderboard.astro';
+import Podium from '../../components/Podium.astro';
+
+const racers = [
+	{name: "max",
+		points: 300
+	},
+	{name: "Checo",
+		points: 229
+	},
+	{name: "Nando",
+		points: 125
+	},
+	{name: "carlitos",
+		points: 96
+	},
+	{name: "lecler",
+		points: 88
+	},
+	{name: "otro",
+		points: 75
+	},
+	{name: "otro mas",
+		points: 36
+	}
+]
+---
+
+<Layout title="F1-corner">
+	<main>
+		<h1>Clasificación</h1>
+		<section>
+			<Podium first="Max verstappen" second="Checo Pérez" third="Fernando Alonso"/>
+			<Leaderboard items={racers}/>
+		</section>
+	</main>
+</Layout>
+

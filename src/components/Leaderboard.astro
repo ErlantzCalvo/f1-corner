@@ -1,0 +1,23 @@
+---
+import '../styles/leaderboard.css'
+interface Item {
+    name: string,
+    points: number
+}
+
+interface Props {
+    items: Item[]
+}
+const {items} = Astro.props;
+---
+<div id="leaderboard">
+    <table>
+        {items?.map((item, idx) => (
+            <tr class:list={[{'first': idx === 0, 'second': idx === 1, 'third': idx === 2}]}>
+                <td class="number">{idx + 1}</td>
+                <td class="name">{item.name}</td>
+                <td class="points">{item.points}</td>
+            </tr>
+        ))}
+    </table>
+</div>
