@@ -14,6 +14,17 @@ export function useTranslations(lang: keyof typeof ui) {
 
 export function useTranslatedPath(lang: keyof typeof ui) {
     return function translatePath(path: string, l: string = lang) {
-      return !showDefaultLang && l === defaultLang ? path : `/${l}${path}`
+      
+      const pathParts = path.split('/');
+      if(pathParts.length > 1 && pathParts[1] in ui) { //  '/es/ranking'  ->  '/ranking' or '/it/ranking'
+        if(l !== defaultLang) pathParts[1] = l;
+        else pathParts.splice(1,1);
+        return pathParts.join('/');
+      } else if(pathParts.length === 2 && l !== defaultLang) { //  '/ranking'  ->  '/es/ranking'
+        pathParts.splice(1, 0, l)
+        return pathParts.join('/');
+      } else {
+        return path;
+      }
     }
   }

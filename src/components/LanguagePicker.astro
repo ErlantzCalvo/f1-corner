@@ -9,7 +9,7 @@ const langsPaths: any = new Object();
 Object.keys(languages).forEach(code => {
   langsPaths[code] = {
     label: languages[code as keyof typeof languages] ,
-    path: translatePath('/', code)
+    path: translatePath(Astro.url.pathname, code)
   }
 
 })
