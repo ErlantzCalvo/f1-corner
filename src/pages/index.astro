@@ -1,40 +1,15 @@
 ---
-import Leaderboard from '../components/Leaderboard.astro';
-import Podium from '../components/Podium.astro';
+import NextRace from '../components/NextRaceInfo.astro';
 import Layout from '../layouts/Layout.astro';
 import '../styles/home.css'
 
-const racers = [
-	{name: "max",
-		points: 300
-	},
-	{name: "Checo",
-		points: 229
-	},
-	{name: "Nando",
-		points: 125
-	},
-	{name: "carlitos",
-		points: 96
-	},
-	{name: "lecler",
-		points: 88
-	},
-	{name: "otro",
-		points: 75
-	},
-	{name: "otro mas",
-		points: 36
-	}
-]
 ---
 
 <Layout title="F1-corner">
 	<main>
 		<h1>F1 Corner</span></h1>
 		<section>
-			<Podium first="Max verstappen" second="Checo Pérez" third="Fernando Alonso"/>
-			<Leaderboard items={racers}/>
+			<NextRace />
 		</section>
 	</main>
 </Layout>
