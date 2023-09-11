@@ -1,52 +1,52 @@
 export interface RaceInfo {
-    MRData: MRData;
+  MRData: MRData;
 }
 
 export interface MRData {
-    xmlns:     string;
-    series:    string;
-    url:       string;
-    limit:     string;
-    offset:    string;
-    total:     string;
-    RaceTable: RaceTable;
+  xmlns: string;
+  series: string;
+  url: string;
+  limit: string;
+  offset: string;
+  total: string;
+  RaceTable: RaceTable;
 }
 
 export interface RaceTable {
-    season: string;
-    round:  string;
-    Races:  Race[];
+  season: string;
+  round: string;
+  Races: Race[];
 }
 
 export interface Race {
-    season:         string;
-    round:          string;
-    url:            string;
-    raceName:       string;
-    Circuit:        Circuit;
-    date:           Date;
-    time:           string;
-    FirstPractice:  FirstPractice;
-    SecondPractice: FirstPractice;
-    ThirdPractice:  FirstPractice;
-    Qualifying:     FirstPractice;
+  season: string;
+  round: string;
+  url: string;
+  raceName: string;
+  Circuit: Circuit;
+  date: Date;
+  time: string;
+  FirstPractice: FirstPractice;
+  SecondPractice: FirstPractice;
+  ThirdPractice: FirstPractice;
+  Qualifying: FirstPractice;
 }
 
 export interface Circuit {
-    circuitId:   string;
-    url:         string;
-    circuitName: string;
-    Location:    Location;
+  circuitId: string;
+  url: string;
+  circuitName: string;
+  Location: Location;
 }
 
 export interface Location {
-    lat:      string;
-    long:     string;
-    locality: string;
-    country:  string;
+  lat: string;
+  long: string;
+  locality: string;
+  country: string;
 }
 
 export interface FirstPractice {
-    date: Date;
-    time: string;
+  date: Date;
+  time: string;
 }
