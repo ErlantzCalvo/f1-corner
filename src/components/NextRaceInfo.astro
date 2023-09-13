@@ -10,80 +10,37 @@ const dateString = `${races[0].date} ${races[0].time}`
     <!-- <p class="text">DIGITAL CLOCK with Vue.js</p> -->
 </next-race-info>
 
-<script is:inline>
-class NextRaceInfo extends HTMLElement {
-    constructor(){
-        super();
-        const component = this;
-        this.time = new Date(this.dataset.time);
-        this.remainingMs = this.time - new Date();
-        var timerID = setInterval(()=>this.updateTime(component), 1000);
-    }
+<script src="./NextRaceInfo.js" is:inline></script>
 
-    updateTime(nextRaceInfo) {
-        nextRaceInfo.remainingMs -= 1000; 
-        document.getElementById('time').innerText = dhm(nextRaceInfo.remainingMs);
-    };
-}
-
-    function zeroPadding(num, digit) {
-        var zero = '';
-        for(var i = 0; i < digit; i++) {
-            zero += '0';
-        }
-        return (zero + num).slice(-digit);
-    }
-
-    function dhm (ms) {
-        const days = Math.floor(ms / (24*60*60*1000));
-        const daysms = ms % (24*60*60*1000);
-        const hours = Math.floor(daysms / (60*60*1000));
-        const hoursms = ms % (60*60*1000);
-        const minutes = Math.floor(hoursms / (60*1000));
-        const minutesms = ms % (60*1000);
-        const sec = Math.floor(minutesms / 1000);
-        return zeroPadding(days) + "d " + zeroPadding(hours, 2) + ":" + zeroPadding(minutes, 2) + ":" + zeroPadding(sec, 2);
-    }
-
-    customElements.define('next-race-info', NextRaceInfo);
-</script>
 
 <style>
-    html,body {
-    height: 100%;
-}
-body {
-    background: #0f3854;
-    background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
-    background-size: 100%;
-}
+
 p {
     margin: 0;
     padding: 0;
 }
 #clock {
     font-family: 'Share Tech Mono', monospace;
-    color: #ffffff;
     text-align: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
-    color: #daf6ff;
     text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
     #time {
         letter-spacing: 0.05em;
-        font-size: 80px;
+        font-size: 5vw;
         padding: 5px 0;
     }
     #date {
         letter-spacing: 0.1em;
-        font-size: 24px;
+        font-size: 2vw;
     }
     .text {
         letter-spacing: 0.1em;
         font-size: 12px;
         padding: 20px 0 0;
     }
+}
+
+html.dark #clock {
+    text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
 }
 </style>
