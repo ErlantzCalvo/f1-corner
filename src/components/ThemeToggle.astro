@@ -21,7 +21,7 @@ import '../styles/themeToggler.css'
 	
 	var isDarkMode = theme !== 'light';
 	
-	const setDarkMode = function(){
+	const setTheme = function(){
         if (!isDarkMode) {
             (document.getElementById("themeSwitch") as HTMLInputElement).checked = false;
             document.documentElement.classList.remove('dark');
@@ -38,11 +38,15 @@ import '../styles/themeToggler.css'
 		element.classList.toggle("dark");
 		isDarkMode = !isDarkMode;
 		localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+		setTheme();
 	}
 
-    setDarkMode();
+    setTheme();
     // Runs on view transitions navigation
-    document.addEventListener("astro:after-swap", setDarkMode);
+    document.addEventListener("astro:after-swap", ()=>{
+		setTheme();
+		document.getElementById("themeSwitch")!.addEventListener("change", handleToggleClick);
+	});
 	
 	document.getElementById("themeSwitch")!.addEventListener("change", handleToggleClick);
 </script>
