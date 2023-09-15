@@ -71,7 +71,7 @@ constructor() {
     if (event.keyCode && event.keyCode == 27 || event.key && event.key.toLowerCase() == 'escape') {
       // close language picker on 'Esc'
       picker.moveFocusToPickerTrigger(picker); // if focus is within dropdown, move it to dropdown trigger
-      picker.toggleLanguagePicker(picker, false); // close dropdown
+      picker.toggleLanguagePicker(picker, 'false'); // close dropdown
     }
   });
   // close language picker when clicking outside it
@@ -97,7 +97,7 @@ initLanguagePickerEvents(picker: LanguagePicker) {
 
   // click events
   picker.trigger.addEventListener('click', function () {
-    picker.toggleLanguagePicker(picker, false);
+    picker.toggleLanguagePicker(picker);
   });
   // keyboard navigation
   picker.dropdown.addEventListener('keydown', function (event: KeyboardEvent) {
@@ -109,7 +109,7 @@ initLanguagePickerEvents(picker: LanguagePicker) {
   });
 };
 
-toggleLanguagePicker(picker: LanguagePicker, bool: boolean) {
+toggleLanguagePicker(picker: LanguagePicker, bool?: string) {
   var ariaExpanded;
   if (bool) {
     ariaExpanded = bool;
@@ -135,7 +135,7 @@ placeDropdown(picker: LanguagePicker) {
 };
 
 checkLanguagePickerClick(picker: LanguagePicker, target: HTMLSpanElement ) { // if user clicks outside the language picker -> close it
-  if (!picker.contains(target)) this.toggleLanguagePicker(picker, false);
+  if (!picker.contains(target)) this.toggleLanguagePicker(picker, 'false');
 };
 
 moveFocusToPickerTrigger(picker: LanguagePicker) {
