@@ -29,193 +29,211 @@ Object.keys(languages).forEach(code => {
   </form>
 </language-picker>
 
-<script is:inline>
-class LanguagePicker extends HTMLElement {
+<script>
+  interface langInfo {
+    label:string,
+    path: string
+  }
+  
+  interface languagePaths {
+    code: langInfo
 
-	constructor() {
-		super();
+  }
+  class LanguagePicker extends HTMLElement {
+languagesInfo:  {[code: string]: langInfo};
+select: HTMLSelectElement;
+options: HTMLCollectionOf<HTMLOptionElement>;
+selectedOption: string;
+pickerId: string;
+trigger: any;
+dropdown: any;
+firstLanguage: any;
+languages: any;
 
-		const picker = this;
-		this.languagesInfo = JSON.parse(this.dataset.languages);
-		this.select = this.getElementsByTagName('select')[0];
-		this.options = this.select.getElementsByTagName('option');
-		this.selectedOption = this.getSelectedOptionText(this);
-		this.pickerId = this.select.getAttribute('id');
-		this.trigger = false;
-		this.dropdown = false;
-		this.firstLanguage = false;
+constructor() {
+  super();
 
-		this.initLanguagePicker(this);
-		this.initLanguagePickerEvents(this);
+  const picker = this;
+  this.languagesInfo = JSON.parse(this.dataset.languages!);
+  this.select = this.getElementsByTagName('select')[0];
+  this.options = this.select.getElementsByTagName('option');
+  this.selectedOption = this.getSelectedOptionText(this);
+  this.pickerId = this.select.id;
+  this.trigger = null;
+  this.dropdown = null;
+  this.firstLanguage = null;
 
-		// listen for key events
-		window.addEventListener('keyup', function (event) {
-			if (event.keyCode && event.keyCode == 27 || event.key && event.key.toLowerCase() == 'escape') {
-				// close language picker on 'Esc'
-				picker.moveFocusToPickerTrigger(picker); // if focus is within dropdown, move it to dropdown trigger
-				picker.toggleLanguagePicker(picker, 'false'); // close dropdown
-			}
-		});
-		// close language picker when clicking outside it
-		window.addEventListener('click', function (event) {
-			picker.checkLanguagePickerClick(picker, event.target);
-		});
-	}
+  this.initLanguagePicker(this);
+  this.initLanguagePickerEvents(this);
 
-
-	initLanguagePicker(picker) {
-		// create the HTML for the custom dropdown element
-		picker.insertAdjacentHTML('beforeend', this.initButtonPicker(picker) + this.initListPicker(picker));
-
-		// save picker elements
-		picker.dropdown = picker.getElementsByClassName('language-picker__dropdown')[0];
-		picker.languages = picker.dropdown.getElementsByClassName('language-picker__item');
-		picker.firstLanguage = picker.languages[0];
-		picker.trigger = picker.getElementsByClassName('language-picker__button')[0];
-	};
-
-	initLanguagePickerEvents(picker) {
-		this.initLanguageSelection(picker);
-
-		// click events
-		picker.trigger.addEventListener('click', function () {
-			picker.toggleLanguagePicker(picker, false);
-		});
-		// keyboard navigation
-		picker.dropdown.addEventListener('keydown', function (event) {
-			if (event.keyCode && event.keyCode == 38 || event.key && event.key.toLowerCase() == 'arrowup') {
-				picker.keyboardNavigatePicker(picker, 'prev');
-			} else if (event.keyCode && event.keyCode == 40 || event.key && event.key.toLowerCase() == 'arrowdown') {
-				picker.keyboardNavigatePicker(picker, 'next');
-			}
-		});
-	};
-
-	toggleLanguagePicker(picker, bool) {
-		var ariaExpanded;
-		if (bool) {
-			ariaExpanded = bool;
-		} else {
-			ariaExpanded = picker.trigger.getAttribute('aria-expanded') == 'true' ? 'false' : 'true';
-		}
-		picker.trigger.setAttribute('aria-expanded', ariaExpanded);
-		if (ariaExpanded == 'true') {
-			picker.firstLanguage.focus(); // fallback if transition is not supported
-			picker.dropdown.addEventListener('transitionend', function cb() {
-				picker.firstLanguage.focus();
-				picker.dropdown.removeEventListener('transitionend', cb);
-			});
-			// place dropdown
-			picker.placeDropdown(picker);
-		}
-	};
-
-	placeDropdown(picker) {
-		var triggerBoundingRect = picker.trigger.getBoundingClientRect();
-		toggleClass(picker.dropdown, 'language-picker__dropdown--right', (window.innerWidth < triggerBoundingRect.left + picker.dropdown.offsetWidth));
-		toggleClass(picker.dropdown, 'language-picker__dropdown--up', (window.innerHeight < triggerBoundingRect.bottom + picker.dropdown.offsetHeight));
-	};
-
-	checkLanguagePickerClick(picker, target) { // if user clicks outside the language picker -> close it
-		if (!picker.contains(target)) this.toggleLanguagePicker(picker, 'false');
-	};
-
-	moveFocusToPickerTrigger(picker) {
-		if (picker.trigger.getAttribute('aria-expanded') == 'false') return;
-		if (document.activeElement.closest('.language-picker__dropdown') == picker.dropdown) picker.trigger.focus();
-	};
-
-	initButtonPicker(picker) { // create the button element -> picker trigger
-		// check if we need to add custom classes to the button trigger
-		var customClasses = picker.getAttribute('data-trigger-class') ? ' ' + picker.getAttribute('data-trigger-class') : '';
-
-		var button = '<button class="language-picker__button' + customClasses + '" aria-label="' + picker.select.value + ' ' + picker.getElementsByTagName('label')[0].textContent + '" aria-expanded="false" aria-controls="' + picker.pickerId + '-dropdown">';
-		button = button + '<span aria-hidden="true" class="language-picker__label language-picker__flag language-picker__flag--' + picker.select.value + '">' + '<em>' + picker.selectedOption + '</em>';
-		return button + '</button>';
-	};
-
-	initListPicker(picker) { // create language picker dropdown
-		var list = '<div class="language-picker__dropdown" aria-describedby="' + picker.pickerId + '-description" id="' + picker.pickerId + '-dropdown">';
-		list = list + '<p class="li4-sr-only" id="' + picker.pickerId + '-description">' + picker.getElementsByTagName('label')[0].textContent + '</p>';
-		list = list + '<ul class="language-picker__list" role="listbox">';
-		for (var i = 0; i < picker.options.length; i++) {
-			var selected = picker.options[i].selected ? ' aria-selected="true"' : '',
-				language = picker.options[i].getAttribute('lang');
-			list = list + '<li><a lang="' + language + '" hreflang="' + language + '" href="' + this.getLanguageUrl(language) + '"' + selected + ' role="option" data-value="' + picker.options[i].innerText + '" class="language-picker__item language-picker__flag language-picker__flag--' + picker.options[i].value + '"><span>' + picker.options[i].text + '</span></a></li>';
-		};
-		return list;
-	};
-
-	getSelectedOptionText(picker) { // used to initialize the label of the picker trigger button
-		var label = '';
-		if ('selectedIndex' in picker.select) {
-			label = picker.options[picker.select.selectedIndex].text;
-		} else {
-			label = picker.select.querySelector('option[selected]').text;
-		}
-		return label;
-	};
-
-	getLanguageUrl(lang) {
-		return this.languagesInfo[lang]?.path;
-	};
-
-	initLanguageSelection(picker) {
-		picker.getElementsByClassName('language-picker__list')[0].addEventListener('click', function (event) {
-			var language = event.target.closest('.language-picker__item');
-			if (!language) return;
-
-			if (language.hasAttribute('aria-selected') && language.getAttribute('aria-selected') == 'true') {
-				// selecting the same language
-				event.preventDefault();
-				picker.trigger.setAttribute('aria-expanded', 'false'); // hide dropdown
-			} else {
-				picker.getElementsByClassName('language-picker__list')[0].querySelector('[aria-selected="true"]').removeAttribute('aria-selected');
-				language.setAttribute('aria-selected', 'true');
-				picker.trigger.getElementsByClassName('language-picker__label')[0].setAttribute('class', 'language-picker__label language-picker__flag language-picker__flag--' + language.getAttribute('data-value'));
-				picker.trigger.getElementsByClassName('language-picker__label')[0].getElementsByTagName('em')[0].textContent = language.textContent;
-				picker.trigger.setAttribute('aria-expanded', 'false');
-			}
-		});
-	};
-
-	keyboardNavigatePicker(picker, direction) {
-		var index = getIndexInArray(picker.languages, document.activeElement);
-		index = (direction == 'next') ? index + 1 : index - 1;
-		if (index < 0) index = picker.languages.length - 1;
-		if (index >= picker.languages.length) index = 0;
-		moveFocus(picker.languages[index]);
-	};
+  // listen for key events
+  window.addEventListener('keyup', function (event) {
+    if (event.keyCode && event.keyCode == 27 || event.key && event.key.toLowerCase() == 'escape') {
+      // close language picker on 'Esc'
+      picker.moveFocusToPickerTrigger(picker); // if focus is within dropdown, move it to dropdown trigger
+      picker.toggleLanguagePicker(picker, false); // close dropdown
+    }
+  });
+  // close language picker when clicking outside it
+  window.addEventListener('click', function (event) {
+    picker.checkLanguagePickerClick(picker, event.target as HTMLSpanElement);
+  });
 }
 
-function addClass(el, className) {
-  var classList = className.split(' ');
-  el.classList.add(classList[0]);
-  if (classList.length > 1) addClass(el, classList.slice(1).join(' '));
-}
 
-function removeClass(el, className) {
-  var classList = className.split(' ');
-  el.classList.remove(classList[0]);
-  if (classList.length > 1) removeClass(el, classList.slice(1).join(' '));
-}
+initLanguagePicker(picker: LanguagePicker) {
+  // create the HTML for the custom dropdown element
+  picker.insertAdjacentHTML('beforeend', this.initButtonPicker(picker) + this.initListPicker(picker));
 
-function toggleClass(el, className, bool) {
-  if(bool) addClass(el, className);
-  else removeClass(el, className);
+  // save picker elements
+  picker.dropdown = picker.getElementsByClassName('language-picker__dropdown')[0];
+  picker.languages = picker.dropdown.getElementsByClassName('language-picker__item');
+  picker.firstLanguage = picker.languages[0];
+  picker.trigger = picker.getElementsByClassName('language-picker__button')[0];
 };
 
-function moveFocus(element) {
-  if( !element ) element = document.getElementsByTagName('body')[0];
-  element.focus();
-  if (document.activeElement !== element) {
-    element.setAttribute('tabindex','-1');
-    element.focus();
+initLanguagePickerEvents(picker: LanguagePicker) {
+  this.initLanguageSelection(picker);
+
+  // click events
+  picker.trigger.addEventListener('click', function () {
+    picker.toggleLanguagePicker(picker, false);
+  });
+  // keyboard navigation
+  picker.dropdown.addEventListener('keydown', function (event: KeyboardEvent) {
+    if (event.keyCode && event.keyCode == 38 || event.key && event.key.toLowerCase() == 'arrowup') {
+      picker.keyboardNavigatePicker(picker, 'prev');
+    } else if (event.keyCode && event.keyCode == 40 || event.key && event.key.toLowerCase() == 'arrowdown') {
+      picker.keyboardNavigatePicker(picker, 'next');
+    }
+  });
+};
+
+toggleLanguagePicker(picker: LanguagePicker, bool: boolean) {
+  var ariaExpanded;
+  if (bool) {
+    ariaExpanded = bool;
+  } else {
+    ariaExpanded = picker.trigger.getAttribute('aria-expanded') == 'true' ? 'false' : 'true';
+  }
+  picker.trigger.setAttribute('aria-expanded', ariaExpanded);
+  if (ariaExpanded == 'true') {
+    picker.firstLanguage.focus(); // fallback if transition is not supported
+    picker.dropdown.addEventListener('transitionend', function cb() {
+      picker.firstLanguage.focus();
+      picker.dropdown.removeEventListener('transitionend', cb);
+    });
+    // place dropdown
+    picker.placeDropdown(picker);
   }
 };
 
-function getIndexInArray(array, el) {
-  return Array.prototype.indexOf.call(array, el);
+placeDropdown(picker: LanguagePicker) {
+  var triggerBoundingRect = picker.trigger.getBoundingClientRect();
+  toggleClass(picker.dropdown, 'language-picker__dropdown--right', (window.innerWidth < triggerBoundingRect.left + picker.dropdown.offsetWidth));
+  toggleClass(picker.dropdown, 'language-picker__dropdown--up', (window.innerHeight < triggerBoundingRect.bottom + picker.dropdown.offsetHeight));
+};
+
+checkLanguagePickerClick(picker: LanguagePicker, target: HTMLSpanElement ) { // if user clicks outside the language picker -> close it
+  if (!picker.contains(target)) this.toggleLanguagePicker(picker, false);
+};
+
+moveFocusToPickerTrigger(picker: LanguagePicker) {
+  if (picker.trigger.getAttribute('aria-expanded') == 'false') return;
+  if (document.activeElement!.closest('.language-picker__dropdown') == picker.dropdown) picker.trigger.focus();
+};
+
+initButtonPicker(picker: LanguagePicker) { // create the button element -> picker trigger
+  // check if we need to add custom classes to the button trigger
+  var customClasses = picker.getAttribute('data-trigger-class') ? ' ' + picker.getAttribute('data-trigger-class') : '';
+
+  var button = '<button class="language-picker__button' + customClasses + '" aria-label="' + picker.select.value + ' ' + picker.getElementsByTagName('label')[0].textContent + '" aria-expanded="false" aria-controls="' + picker.pickerId + '-dropdown">';
+  button = button + '<span aria-hidden="true" class="language-picker__label language-picker__flag language-picker__flag--' + picker.select.value + '">' + '<em>' + picker.selectedOption + '</em>';
+  return button + '</button>';
+};
+
+initListPicker(picker: LanguagePicker) { // create language picker dropdown
+  var list = '<div class="language-picker__dropdown" aria-describedby="' + picker.pickerId + '-description" id="' + picker.pickerId + '-dropdown">';
+  list = list + '<p class="li4-sr-only" id="' + picker.pickerId + '-description">' + picker.getElementsByTagName('label')[0].textContent + '</p>';
+  list = list + '<ul class="language-picker__list" role="listbox">';
+  for (var i = 0; i < picker.options.length; i++) {
+    var selected = picker.options[i].selected ? ' aria-selected="true"' : '',
+      language = picker.options[i].getAttribute('lang')!;
+    list = list + '<li><a lang="' + language + '" hreflang="' + language + '" href="' + this.getLanguageUrl(language) + '"' + selected + ' role="option" data-value="' + picker.options[i].innerText + '" class="language-picker__item language-picker__flag language-picker__flag--' + picker.options[i].value + '"><span>' + picker.options[i].text + '</span></a></li>';
+  };
+  return list;
+};
+
+getSelectedOptionText(picker: LanguagePicker) { // used to initialize the label of the picker trigger button
+  var label = '';
+  if ('selectedIndex' in picker.select) {
+    label = picker.options[picker.select.selectedIndex].text;
+  } else {
+    label = ((picker.select as HTMLSelectElement).querySelector('option[selected]') as HTMLOptionElement).text;
+  }
+  return label;
+};
+
+getLanguageUrl(lang: string) {
+  return this.languagesInfo[lang]?.path;
+};
+
+initLanguageSelection(picker: LanguagePicker) {
+  picker.getElementsByClassName('language-picker__list')[0].addEventListener('click', function (event) {
+    var language = (event.target as HTMLSpanElement).closest('.language-picker__item');
+    if (!language) return;
+
+    if (language.hasAttribute('aria-selected') && language.getAttribute('aria-selected') == 'true') {
+      // selecting the same language
+      event.preventDefault();
+      picker.trigger.setAttribute('aria-expanded', 'false'); // hide dropdown
+    } else {
+      picker.getElementsByClassName('language-picker__list')[0].querySelector('[aria-selected="true"]')?.removeAttribute('aria-selected');
+      language.setAttribute('aria-selected', 'true');
+      picker.trigger.getElementsByClassName('language-picker__label')[0].setAttribute('class', 'language-picker__label language-picker__flag language-picker__flag--' + language.getAttribute('data-value'));
+      picker.trigger.getElementsByClassName('language-picker__label')[0].getElementsByTagName('em')[0].textContent = language.textContent;
+      picker.trigger.setAttribute('aria-expanded', 'false');
+    }
+  });
+};
+
+keyboardNavigatePicker(picker: LanguagePicker, direction: string) {
+  var index = getIndexInArray(picker.languages, document.activeElement!);
+  index = (direction == 'next') ? index + 1 : index - 1;
+  if (index < 0) index = picker.languages.length - 1;
+  if (index >= picker.languages.length) index = 0;
+  moveFocus(picker.languages[index]);
+};
+}
+
+function addClass(el: HTMLElement, className: string) {
+var classList = className.split(' ');
+el.classList.add(classList[0]);
+if (classList.length > 1) addClass(el, classList.slice(1).join(' '));
+}
+
+function removeClass(el: HTMLElement, className: string) {
+var classList = className.split(' ');
+el.classList.remove(classList[0]);
+if (classList.length > 1) removeClass(el, classList.slice(1).join(' '));
+}
+
+function toggleClass(el: HTMLElement, className: string, bool: boolean) {
+if(bool) addClass(el, className);
+else removeClass(el, className);
+};
+
+function moveFocus(element: HTMLElement) {
+if( !element ) element = document.getElementsByTagName('body')[0];
+element.focus();
+if (document.activeElement !== element) {
+  element.setAttribute('tabindex','-1');
+  element.focus();
+}
+};
+
+function getIndexInArray(array: [], el: Element) {
+return Array.prototype.indexOf.call(array, el);
 };
 
 customElements.define('language-picker', LanguagePicker);
