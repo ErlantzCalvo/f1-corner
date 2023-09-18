@@ -11,6 +11,7 @@
     "prettier": "pnpm exec prettier . --write"
   },
   "dependencies": {
+    "@fontsource/titillium-web": "^5.0.12",
     "astro": "^3.0.8"
   },
   "devDependencies": {

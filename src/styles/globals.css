@@ -39,7 +39,7 @@ html.dark {
 }
 
 html {
-  font-family: system-ui, sans-serif;
+  font-family: 'Titillium Web', monospace, sans-serif;
   background-color: var(--bkg-color);
   background-size: 224px;
 }

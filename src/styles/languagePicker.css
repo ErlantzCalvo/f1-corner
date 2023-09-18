@@ -239,7 +239,6 @@ svg {
 }
 
 .language-picker__item {
-  font-family: system-ui, sans-serif;
   font-size: 1rem;
   display: flex;
   align-items: center;
