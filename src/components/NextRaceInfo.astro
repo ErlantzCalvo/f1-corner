@@ -2,12 +2,12 @@
 import {getNextRaceData} from '../api/schedule'
 const {season, round, Races: races} = await getNextRaceData();
 const dateString = `${races[0].date} ${races[0].time}`
+import Spinner from '../components/Spinner.astro'
 ---
 
-<next-race-info id="clock" data-time={dateString}>
+<next-race-info id="clock" data-time={dateString} transition:persist>
     <p id="date">{races[0].date}</p>
-    <p id="time">{races[0].time}</p>
-    <!-- <p class="text">DIGITAL CLOCK with Vue.js</p> -->
+    <div id="time"><Spinner /></div>
 </next-race-info>
 
 
@@ -19,6 +19,7 @@ document.addEventListener('astro:page-load', () => {
             const component = this;
             this.time = new Date(this.dataset.time);
             this.remainingMs = this.time - new Date();
+            this.updateTime(component);
             this.timerID = setInterval(() => this.updateTime(component), 1000);
         }
 
@@ -26,7 +27,7 @@ document.addEventListener('astro:page-load', () => {
             const time = document.getElementById('time');
             if (time) {
                 nextRaceInfo.remainingMs -= 1000;
-                document.getElementById('time').innerText = dhm(nextRaceInfo.remainingMs);
+                nextRaceInfo.querySelector('#time').innerHTML = dhm(nextRaceInfo.remainingMs);
             } else {
                 clearInterval(nextRaceInfo.timerID)
             }
