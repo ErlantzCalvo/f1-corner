@@ -1,15 +1,13 @@
 ---
+import NextRace from '../../components/NextRaceInfo.astro';
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/home.css'
+
 ---
 
 <Layout title="F1-corner">
-	<h1>Welcome to <span class="text-gradient">Erlantz</span></h1>
-	<p class="instructions">
-		To get started, open the directory <code>src/pages</code> in your project.<br />
-		<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-	</p>
-	<ul role="list" class="link-card-grid">
-		
-	</ul>
+	<h1>F1 Corner</span></h1>
+	<section>
+		<NextRace daysText="días"/>
+	</section>
 </Layout>
