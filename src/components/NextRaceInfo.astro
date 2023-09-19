@@ -3,10 +3,16 @@ import {getNextRaceData} from '../api/schedule'
 const {season, round, Races: races} = await getNextRaceData();
 const dateString = `${races[0].date} ${races[0].time}`
 import Spinner from '../components/Spinner.astro'
+import { getLangFromUrl } from '../i18n/utils';
+
+const {daysText} = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+const date = new Date(races[0].date).toLocaleDateString(lang, options);
 ---
 
-<next-race-info id="clock" data-time={dateString} transition:persist>
-    <p id="date">{races[0].date}</p>
+<next-race-info id="clock" data-time={dateString} data-daystext={daysText} transition:persist>
+    <p id="date">{date}</p>
     <div id="time"><Spinner /></div>
 </next-race-info>
 
@@ -18,6 +24,7 @@ document.addEventListener('astro:page-load', () => {
             super();
             const component = this;
             this.time = new Date(this.dataset.time);
+            this.daystext = this.dataset.daystext
             this.remainingMs = this.time - new Date();
             this.updateTime(component);
             this.timerID = setInterval(() => this.updateTime(component), 1000);
@@ -27,7 +34,7 @@ document.addEventListener('astro:page-load', () => {
             const time = document.getElementById('time');
             if (time) {
                 nextRaceInfo.remainingMs -= 1000;
-                nextRaceInfo.querySelector('#time').innerHTML = dhm(nextRaceInfo.remainingMs);
+                nextRaceInfo.querySelector('#time').innerHTML = dhm(nextRaceInfo.remainingMs, nextRaceInfo.daystext);
             } else {
                 clearInterval(nextRaceInfo.timerID)
             }
@@ -46,7 +53,7 @@ function zeroPadding(num, digit) {
     return (zero + num).slice(-digit);
 }
 
-function dhm(ms) {
+function dhm(ms, daysText) {
     const days = Math.floor(ms / (24 * 60 * 60 * 1000));
     const daysms = ms % (24 * 60 * 60 * 1000);
     const hours = Math.floor(daysms / (60 * 60 * 1000));
@@ -54,7 +61,7 @@ function dhm(ms) {
     const minutes = Math.floor(hoursms / (60 * 1000));
     const minutesms = ms % (60 * 1000);
     const sec = Math.floor(minutesms / 1000);
-    return zeroPadding(days) + " days " + zeroPadding(hours, 2) + ":" + zeroPadding(minutes, 2) + ":" + zeroPadding(sec, 2);
+    return zeroPadding(days) + " " + daysText + " " + zeroPadding(hours, 2) + ":" + zeroPadding(minutes, 2) + ":" + zeroPadding(sec, 2);
 }
 
 </script>
