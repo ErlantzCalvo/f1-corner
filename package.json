@@ -8,13 +8,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prettier": "pnpm exec prettier . --write"
+    "prettier": "pnpm exec prettier . --write",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@fontsource/titillium-web": "^5.0.12",
     "astro": "^3.0.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.38.0",
+    "@types/node": "^20.6.2",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.0"
   }
