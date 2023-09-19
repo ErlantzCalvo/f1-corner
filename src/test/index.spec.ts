@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-test.beforeEach(async ({ page }) =>{
+test.beforeEach(async ({ page }) => {
   await page.goto("/");
-})
+});
 
 test("Titles are correct", async ({ page }) => {
   await expect(page).toHaveTitle("F1-corner");
@@ -33,9 +33,3 @@ test("Navigation with nav links", async ({ page }) => {
     await expect(page).toHaveURL(path!);
   }
 });
-
-
-
-
-
-
