@@ -1,6 +1,9 @@
 ---
 import { Image } from "astro:assets"; 
 import wheel from '../../public/f1-wheel.svg'
+import {getLangFromUrl, useTranslations} from '../i18n/utils'
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 <div class="container">
 
@@ -8,7 +11,7 @@ import wheel from '../../public/f1-wheel.svg'
         <div class="bounce">
           <Image src={wheel} alt="Loading Formula 1 wheel animation" class="wheel" width={100} height={100}/>
         </div>
-        Loading...
+        {t("spinner.loading")}
       </div>
       
   </div>
