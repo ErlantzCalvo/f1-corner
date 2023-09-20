@@ -11,7 +11,7 @@ const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', 
 const date = new Date(races[0].date).toLocaleDateString(lang, options);
 ---
 
-<next-race-info id="clock" data-time={dateString} data-daystext={daysText} transition:persist>
+<next-race-info id="clock" data-time={dateString} data-daystext={daysText} >
     <p id="date">{date}</p>
     <div id="time"><Spinner /></div>
 </next-race-info>
