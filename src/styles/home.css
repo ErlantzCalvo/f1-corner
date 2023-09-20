@@ -1,0 +1,4 @@
+section {
+  border: solid 2px var(--primary-color);
+  border-radius: 10px;
+}

@@ -14,10 +14,11 @@
 main {
   margin: auto;
   padding: 1rem;
-  width: 800px;
+  width: 90vw;
   max-width: calc(100% - 2rem);
   font-size: 20px;
   line-height: 1.6;
+  text-align: center;
 }
 
 h1 {
