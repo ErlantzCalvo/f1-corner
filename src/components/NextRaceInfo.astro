@@ -1,19 +1,31 @@
 ---
 import {getNextRaceData} from '../api/schedule'
+import Spinner from '../components/Spinner.astro'
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 const {season, round, Races: races} = await getNextRaceData();
 const dateString = `${races[0].date} ${races[0].time}`
-import Spinner from '../components/Spinner.astro'
-import { getLangFromUrl } from '../i18n/utils';
 
-const {daysText} = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 const date = new Date(races[0].date).toLocaleDateString(lang, options);
 ---
 
-<next-race-info id="clock" data-time={dateString} data-daystext={daysText} >
-    <p id="date">{date}</p>
-    <div id="time"><Spinner /></div>
+<next-race-info id="clock" data-time={dateString} data-daystext={t("next_race.days")} >
+    <div>
+        <article>
+            <h3>{t("next_race.info")}</h3>
+            <ul>
+                <li><strong>{t("next_race.round")}: </strong> {round}</li>
+                <li id="date"><strong>{t("next_race.date")}: </strong> {date}</li>
+            </ul>
+        </article>
+        <article>
+            <h3>{t("next_race.time_remaining")}</h3>
+            <div id="time"><Spinner /></div>
+        </article>
+    </div>
 </next-race-info>
 
 
@@ -67,23 +79,33 @@ function dhm(ms, daysText) {
 </script>
 
 <style>
+next-race-info > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2em 0 2em;
+    max-width: 70vw;
+    margin: auto;
+}
 
+ul {
+    text-align: start;
+}
+
+ul > li {
+    letter-spacing: 0.1em;
+    font-size: 2vw;
+}
 p {
     margin: 0;
     padding: 0;
 }
 #clock {
-    text-align: center;
     transform: translate(-50%, -50%);
-    text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
+    text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
     #time {
         letter-spacing: 0.05em;
-        font-size: 5vw;
+        font-size: 3vw;
         padding: 5px 0;
-    }
-    #date {
-        letter-spacing: 0.1em;
-        font-size: 2vw;
     }
     .text {
         letter-spacing: 0.1em;
@@ -95,4 +117,5 @@ p {
 html.dark #clock {
     text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
 }
+
 </style>
