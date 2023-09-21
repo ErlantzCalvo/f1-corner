@@ -248,7 +248,6 @@ svg {
 li:has(> .language-picker__item) {
   background-color: hsl(0, 0%, 100%);
   transition: background 0.2s;
-
 }
 
 .language-picker__item span {

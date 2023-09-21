@@ -69,7 +69,8 @@ nav > .nav-links {
     height: 50px;
     padding: 13px;
   }
-  nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+  nav > .nav-btn > label:hover,
+  .nav #nav-check:checked ~ .nav-btn > label {
     background-color: rgba(0, 0, 0, 0.3);
   }
   nav > .nav-btn > label > span {
@@ -101,5 +102,4 @@ nav > .nav-links {
     height: calc(25vh - 50px);
     overflow-y: auto;
   }
-
 }

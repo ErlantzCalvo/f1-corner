@@ -53,54 +53,54 @@ export interface FirstPractice {
 }
 
 export interface Result {
-  number: string
-  position: string
-  positionText: string
-  points: string
-  Driver: Driver
-  Constructor: Constructor
-  grid: string
-  laps: string
-  status: string
-  Time?: Time
-  FastestLap?: FastestLap
+  number: string;
+  position: string;
+  positionText: string;
+  points: string;
+  Driver: Driver;
+  Constructor: Constructor;
+  grid: string;
+  laps: string;
+  status: string;
+  Time?: Time;
+  FastestLap?: FastestLap;
 }
 
 export interface Driver {
-  driverId: string
-  permanentNumber: string
-  code: string
-  url: string
-  givenName: string
-  familyName: string
-  dateOfBirth: string
-  nationality: string
+  driverId: string;
+  permanentNumber: string;
+  code: string;
+  url: string;
+  givenName: string;
+  familyName: string;
+  dateOfBirth: string;
+  nationality: string;
 }
 
 export interface Constructor {
-  constructorId: string
-  url: string
-  name: string
-  nationality: string
+  constructorId: string;
+  url: string;
+  name: string;
+  nationality: string;
 }
 
 export interface Time {
-  millis: string
-  time: string
+  millis: string;
+  time: string;
 }
 
 export interface FastestLap {
-  rank: string
-  lap: string
-  Time: Time2
-  AverageSpeed: AverageSpeed
+  rank: string;
+  lap: string;
+  Time: Time2;
+  AverageSpeed: AverageSpeed;
 }
 
 export interface Time2 {
-  time: string
+  time: string;
 }
 
 export interface AverageSpeed {
-  units: string
-  speed: string
+  units: string;
+  speed: string;
 }
