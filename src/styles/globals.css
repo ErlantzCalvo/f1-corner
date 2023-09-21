@@ -13,7 +13,7 @@
 
 main {
   margin: auto;
-  padding: 55px; /* Header's height*/
+  padding-top: 55px; /* Header's height*/
   width: 90vw;
   max-width: calc(100% - 2rem);
   font-size: 20px;
