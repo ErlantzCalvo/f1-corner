@@ -24,18 +24,27 @@ const links: Link[] = [
 
 <header>
 	<nav aria-label="Main menu">
+		<input type="checkbox" id="nav-check">
         <a href={translatePath('/')} >
             <Image src={logo} alt="logo: man with a wheel" width="32" height="32"/>
         </a>
-		{
-			links.map(({ href, text }) => (
-				<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined}>
-					<strong>{text}</strong>
-				</a>
-			))
-		}
+		<div class="nav-links">
+			{
+				links.map(({ href, text }) => (
+					<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined}>
+						<strong>{text}</strong>
+					</a>
+				))
+			}
+		</div>
+		<div class="nav-btn">
+			<label for="nav-check">
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			</label>
+		</div>
 		<LanguagePicker currentLang={lang} />
         <ThemeToggle />
 	</nav>
 </header>
-
