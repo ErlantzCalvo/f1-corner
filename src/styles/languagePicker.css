@@ -37,9 +37,7 @@ language-picker * {
   border: 0;
 }
 
-ol,
-ul,
-menu {
+ul {
   list-style: none;
 }
 
@@ -243,18 +241,22 @@ svg {
   display: flex;
   align-items: center;
   text-decoration: none;
-  /* padding: var(--space-2xs) var(--space-sm); */
   padding: var(--li4-space-2xs) var(--li4-space-sm);
   color: hsl(var(--li4-color-contrast-high-hsl));
-  transition: background 0.2s;
-  background-color: hsl(0, 0%, 100%);
 }
+
+li:has(> .language-picker__item) {
+  background-color: hsl(0, 0%, 100%);
+  transition: background 0.2s;
+
+}
+
 .language-picker__item span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.language-picker__item:hover {
+li:has(> .language-picker__item):hover {
   background-color: hsla(var(--li4-color-contrast-higher-hsl), 0.075);
 }
 .language-picker__item:focus {
