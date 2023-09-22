@@ -43,10 +43,11 @@ document.addEventListener('astro:page-load', () => {
         }
 
         updateTime(nextRaceInfo) {
-            const time = document.getElementById('time');
+            const time = nextRaceInfo.querySelector('#time');
             if (time) {
                 nextRaceInfo.remainingMs -= 1000;
-                nextRaceInfo.querySelector('#time').innerHTML = dhm(nextRaceInfo.remainingMs, nextRaceInfo.daystext);
+                if(nextRaceInfo.remainingMs < 1000) clearInterval(nextRaceInfo.timerID)
+                time.innerHTML = dhm(nextRaceInfo.remainingMs, nextRaceInfo.daystext);
             } else {
                 clearInterval(nextRaceInfo.timerID)
             }
