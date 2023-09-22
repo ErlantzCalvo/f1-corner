@@ -31,7 +31,7 @@ const links: Link[] = [
 		<div class="nav-links">
 			{
 				links.map(({ href, text }) => (
-					<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined}>
+					<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} rel="prefetch-intent" >
 						<strong>{text}</strong>
 					</a>
 				))
