@@ -2,7 +2,9 @@
 import NextRace from '../../components/NextRaceInfo.astro';
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/home.css'
+import { getLastRaceResults } from '../../api/results'
 
+const {Circuit, Results} = await getLastRaceResults();
 ---
 
 <Layout title="F1-corner">
@@ -10,4 +12,34 @@ import '../../styles/home.css'
 		<h2>Próxima carrera</h2>
 		<NextRace daysText="días" roundText="Ronda" dateText=""/>
 	</section>
+	<section>
+		<h2>Resultados de la última carrera</h2>
+		<div class="lastRaceResults">
+		<h4>Circuito: &nbsp;&nbsp; {Circuit.circuitName} ({Circuit.Location.country})</h4> 
+			<ol>
+				{
+					Results?.map(result => (
+						<li>{result.Driver.givenName}&nbsp;{result.Driver.familyName}</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
 </Layout>
+
+<style>
+
+	section {
+	  border: solid 2px var(--primary-color);
+	  border-radius: 10px;
+	  margin-bottom: 15px;
+	}
+
+	.lastRaceResults {
+		text-align: left;
+		margin: auto;
+		width: 60%;
+	}
+	
+	</style>
+	

@@ -14,7 +14,8 @@ const {Circuit, Results} = await getLastRaceResults();
 	</section>
 	<section>
 		<h2>Last Race Results</h2>
-		<strong>Circuit: </strong> {Circuit.circuitName} ({Circuit.Location.country})
+		<div class="lastRaceResults">
+		<h4>Circuit:&nbsp;&nbsp;  {Circuit.circuitName} ({Circuit.Location.country})</h4>
 		<ol>
 			{
 				Results?.map(result => (
@@ -22,5 +23,28 @@ const {Circuit, Results} = await getLastRaceResults();
 				))
 			}
 		</ol>
+	</div>
 	</section>
 </Layout>
+
+<style>
+
+section {
+  border: solid 2px var(--primary-color);
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+section {
+	  border: solid 2px var(--primary-color);
+	  border-radius: 10px;
+	  margin-bottom: 15px;
+	}
+
+	.lastRaceResults {
+		text-align: left;
+		margin: auto;
+		width: 60%;
+	}
+
+</style>
