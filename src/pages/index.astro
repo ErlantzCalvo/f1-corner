@@ -3,8 +3,11 @@ import NextRace from '../components/NextRaceInfo.astro';
 import Layout from '../layouts/Layout.astro';
 import '../styles/home.css'
 import { getLastRaceResults } from '../api/results'
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const {Circuit, Results} = await getLastRaceResults();
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout title="F1-corner">
@@ -15,14 +18,14 @@ const {Circuit, Results} = await getLastRaceResults();
 	<section>
 		<h2>Last Race Results</h2>
 		<div class="lastRaceResults">
-		<h4 class="circuit">Circuit:&nbsp;&nbsp;  <a href={Circuit.url} >{Circuit.circuitName} ({Circuit.Location.country})</a></h4>
+		<h4 class="circuit">{t("circuit")}:&nbsp;&nbsp;  <a href={Circuit.url} >{Circuit.circuitName} ({Circuit.Location.country})</a></h4>
 		<table>
 			<thead>
 				<th></th>
-				<th>Position</th>
-				<th>Driver</th>
-				<th>Constructor</th>
-				<th>Finish reason</th>
+				<th>{t("position")}</th>
+				<th>{t("driver")}</th>
+				<th>{t("constructor")}</th>
+				<th>{t("finish_reason")}</th>
 			</thead>
 			<tbody>
 				{
@@ -30,7 +33,7 @@ const {Circuit, Results} = await getLastRaceResults();
 						<tr>
 							<td>
 							{result.FastestLap?.rank === "1" &&
-							<span class="fast-lap" title="Fast lap">
+							<span class="fast-lap" title={t("fast_lap")}>
 								<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fast-lap-ico"></path> </g></svg>
 								{result.FastestLap?.Time.time}</span>
 							}
