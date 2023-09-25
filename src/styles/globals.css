@@ -9,11 +9,12 @@
     rgb(var(--accent-light)) 30%,
     white 60%
   );
+  --header-size: 55px;
 }
 
 main {
   margin: auto;
-  padding-top: 55px; /* Header's height*/
+  padding-top: var(--header-size); /* Header's height*/
   width: 90vw;
   max-width: calc(100% - 2rem);
   font-size: 20px;
