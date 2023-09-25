@@ -15,19 +15,56 @@ const {Circuit, Results} = await getLastRaceResults();
 	<section>
 		<h2>Last Race Results</h2>
 		<div class="lastRaceResults">
-		<h4>Circuit:&nbsp;&nbsp;  {Circuit.circuitName} ({Circuit.Location.country})</h4>
-		<ol>
-			{
-				Results?.map(result => (
-					<li>{result.Driver.givenName}&nbsp;{result.Driver.familyName}</li>
-				))
-			}
-		</ol>
+		<h4 class="circuit">Circuit:&nbsp;&nbsp;  <a href={Circuit.url} >{Circuit.circuitName} ({Circuit.Location.country})</a></h4>
+		<table>
+			<thead>
+				<th></th>
+				<th>Position</th>
+				<th>Driver</th>
+				<th>Constructor</th>
+				<th>Finish reason</th>
+			</thead>
+			<tbody>
+				{
+					Results?.map((result, position) => (
+						<tr>
+							<td>
+							{result.FastestLap?.rank === "1" &&
+							<span class="fast-lap" title="Fast lap">
+								<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fast-lap-ico"></path> </g></svg>
+								{result.FastestLap?.Time.time}</span>
+							}
+							</td>
+							<td>
+								{position + 1}
+							</td>
+							<td>
+								{result.Driver.givenName}&nbsp;{result.Driver.familyName}
+							</td> 
+							<td>
+								<span class:list={['constructor', result.Constructor.constructorId]}>
+									<a href={result.Constructor.url}>{result.Constructor.name}</a>
+								</span>
+							</td>
+							<td>
+								{result.status}
+							</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
 	</div>
 	</section>
 </Layout>
 
 <style>
+.fast-lap > svg {
+	margin-right: 3px;
+}
+html.dark .fast-lap > svg path {
+	stroke: white;
+}
 
 section {
   border: solid 2px var(--primary-color);
@@ -41,10 +78,87 @@ section {
 	  margin-bottom: 15px;
 	}
 
+	table {
+		width: 100%;
+	}
+
+	.fast-lap {
+		margin-right: 1em;
+		font-size: 0.75em;
+	}
+
+	.fast-lap > img {
+		margin-right: 3px;
+	}
+
 	.lastRaceResults {
 		text-align: left;
 		margin: auto;
 		width: 60%;
+	}
+
+	.constructor {
+		margin-left: 1em;
+	    border-radius: 10px;
+		padding: 0 5px;
+		font-weight: bold;
+	}
+	.circuit > a,
+	.constructor > a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	a:hover {
+		filter: brightness(50%);
+	}
+	.constructor.red_bull {
+		background-color: #1E41FF;
+		color: #FDD900;
+		border: solid 0.25px #E30118;
+	}
+	.constructor.mclaren {
+		background-color: #e37708;
+		color: white;
+	}
+	.constructor.ferrari {
+		background-color: #DF0100;
+		color: white;
+	}
+	.constructor.mercedes {
+		background-color: #111111;
+		color: #00A19c;
+		border: solid 0.25px #c6c6c6;
+	}
+	.constructor.aston_martin {
+		background-color: #00352F;
+		color: #CEDC00;
+		border: solid 0.25px #00594f;
+	}
+	.constructor.alpine {
+		background-color: #024e91;
+		color: #f071ca;
+		border: solid 0.25px #0078c1;
+	}
+	.constructor.alphatauri {
+		background-color: #041F3D;
+		color: #F1F3F4;
+		border: solid 0.25px #DD0740;
+	}
+	.constructor.alfa {
+		background-color: #000e22;
+		color: #c01d38;
+		border: solid 0.25px #004e37;
+	}
+	.constructor.haas {
+		background-color: #111111;
+		color: #aeaeae;
+		border: solid 0.25px #DA291c;
+	}
+	.constructor.williams {
+		background-color: #041e42;
+		color: #00B5FF;
+		border: solid 0.25px #e40046;
 	}
 
 </style>
