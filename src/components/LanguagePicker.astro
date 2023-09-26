@@ -34,10 +34,6 @@ Object.keys(languages).forEach(code => {
     path: string
   }
   
-  interface languagePaths {
-    code: langInfo
-
-  }
   class LanguagePicker extends HTMLElement {
 languagesInfo:  {[code: string]: langInfo};
 select: HTMLSelectElement;

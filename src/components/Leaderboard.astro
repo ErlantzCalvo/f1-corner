@@ -1,23 +1,105 @@
 ---
-import '../styles/leaderboard.css'
 interface Item {
-    name: string,
-    points: number
+  name: string;
+  points: string;
+  image: string | null;
 }
 
 interface Props {
-    items: Item[]
+  items: Item[];
 }
-const {items} = Astro.props;
+const { items } = Astro.props;
 ---
+
 <div id="leaderboard">
-    <table>
-        {items?.map((item, idx) => (
-            <tr class:list={[{'first': idx === 0, 'second': idx === 1, 'third': idx === 2}]}>
-                <td class="number">{idx + 1}</td>
-                <td class="name">{item.name}</td>
-                <td class="points">{item.points}</td>
-            </tr>
-        ))}
-    </table>
+  <table>
+    {
+      items?.map((item, idx) => (
+        <tr
+          class:list={[
+            { first: idx === 0, second: idx === 1, third: idx === 2 },
+          ]}
+        >
+          <td class="number">{idx + 1}</td>
+          <td class="name">{item.name}</td>
+          <td class="points">{item.points}</td>
+        </tr>
+      ))
+    }
+  </table>
 </div>
+
+<style>
+  #leaderboard {
+    width: 100%;
+    position: relative;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    cursor: default;
+  }
+
+  .dark table {
+    color: #c9cace;
+  }
+
+  tr {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.2rem;
+  }
+
+  tr:hover {
+    background-color: #fff;
+    transform: scale(1.1);
+    -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
+    box-shadow: 0px 5px 15px 8px #e4e7fb;
+  }
+
+  html.dark tr:hover {
+    background-color: #555353;
+    color: #fff;
+    box-shadow: 0px 5px 15px 8px #611f1f;
+  }
+
+  td {
+    height: 5rem;
+    font-size: 1.4rem;
+    padding: 1rem 2rem;
+    position: relative;
+  }
+
+  .number {
+    width: 1rem;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .name {
+    text-align: left;
+    font-size: 1.2rem;
+  }
+
+  .points {
+    font-weight: bold;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .points:first-child {
+    width: 10rem;
+  }
+
+  #buttons {
+    width: 100%;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+</style>
