@@ -22,7 +22,9 @@ const driversInfo = await Promise.all(standings.map( async ({ Driver: driver, po
 <Layout title="Ranking">
 	<h1>Ranking</h1>
 	<section>
-		<Podium first="Max verstappen" second="Checo Pérez" third="Fernando Alonso"/>
+		<Podium first={driversInfo.length > 0? driversInfo[0].name : ''} 
+			second={driversInfo.length > 1? driversInfo[1].name : ''} 
+			third={driversInfo.length > 2? driversInfo[2].name : ''}/>
 		<Leaderboard items={driversInfo}/>
 	</section>
 </Layout>

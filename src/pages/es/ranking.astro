@@ -2,37 +2,30 @@
 import Layout from '../../layouts/Layout.astro';
 import Leaderboard from '../../components/Leaderboard.astro';
 import Podium from '../../components/Podium.astro';
+import {getCurrentDriverStandings} from '../../api/standings'
+import { getArticleImage } from '../../api/wikipedia'
 
-const racers = [
-	{name: "max",
-		points: 300
-	},
-	{name: "Checo",
-		points: 229
-	},
-	{name: "Nando",
-		points: 125
-	},
-	{name: "carlitos",
-		points: 96
-	},
-	{name: "lecler",
-		points: 88
-	},
-	{name: "otro",
-		points: 75
-	},
-	{name: "otro mas",
-		points: 36
+const standings = await getCurrentDriverStandings();
+const driversInfo = await Promise.all(standings.map( async ({ Driver: driver, points})  => {
+	const wikiUrlParts = driver.url.split('/');
+	const wikiDriverName = wikiUrlParts[wikiUrlParts.length - 1];
+	const imageUrl = await getArticleImage(wikiDriverName);
+	return {
+		name: `${driver.givenName} ${driver.familyName}`,
+		points: points,
+		image: imageUrl
 	}
-]
+}))
+
 ---
 
 <Layout title="Ranking">
 	<h1>Clasificación</h1>
 	<section>
-		<Podium first="Max verstappen" second="Checo Pérez" third="Fernando Alonso"/>
-		<Leaderboard items={racers}/>
+		<Podium first={driversInfo.length > 0? driversInfo[0].name : ''} 
+			second={driversInfo.length > 1? driversInfo[1].name : ''} 
+			third={driversInfo.length > 2? driversInfo[2].name : ''}/>
+		<Leaderboard items={driversInfo}/>
 	</section>
 </Layout>
 
