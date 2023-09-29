@@ -17,15 +17,15 @@ const t = useTranslations(lang);
 	</section>
 	<section>
 		<h2>Last Race Results</h2>
-		<div class="lastRaceResults">
+		<div class="last-race-results">
 		<h4 class="circuit">{t("circuit")}:&nbsp;&nbsp;  <a href={Circuit.url} >{Circuit.circuitName} ({Circuit.Location.country})</a></h4>
 		<table>
 			<thead>
 				<th></th>
 				<th>{t("position")}</th>
 				<th>{t("driver")}</th>
-				<th>{t("constructor")}</th>
-				<th>{t("finish_reason")}</th>
+				<th class="hiddeable">{t("constructor")}</th>
+				<th class="hiddeable">{t("finish_reason")}</th>
 			</thead>
 			<tbody>
 				{
@@ -44,12 +44,12 @@ const t = useTranslations(lang);
 							<td>
 								{result.Driver.givenName}&nbsp;{result.Driver.familyName}
 							</td> 
-							<td>
+							<td class="hiddeable">
 								<span class:list={['constructor', result.Constructor.constructorId]}>
 									<a href={result.Constructor.url}>{result.Constructor.name}</a>
 								</span>
 							</td>
-							<td>
+							<td class="hiddeable">
 								{result.status}
 							</td>
 						</tr>
@@ -94,7 +94,7 @@ table {
 	margin-right: 3px;
 }
 
-.lastRaceResults {
+.last-race-results {
 	text-align: left;
 	margin: auto;
 	width: 60%;
@@ -162,6 +162,11 @@ a:hover {
 	background-color: #041e42;
 	color: #00B5FF;
 	border: solid 0.25px #e40046;
+}
+
+@media (max-width:730px) {
+    .hiddeable {display:none}
+	.last-race-results {width: 80%;}
 }
 
 </style>
