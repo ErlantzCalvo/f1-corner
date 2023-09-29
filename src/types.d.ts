@@ -10,7 +10,7 @@ export interface MRData {
   offset: string;
   total: string;
   RaceTable?: RaceTable;
-  StandingsTable?: StandingsTable
+  StandingsTable?: StandingsTable;
 }
 
 export interface RaceTable {
@@ -35,23 +35,23 @@ export interface Race {
 }
 
 export interface StandingsTable {
-  season: string
-  StandingsLists: StandingsList[]
+  season: string;
+  StandingsLists: StandingsList[];
 }
 
 export interface StandingsList {
-  season: string
-  round: string
-  DriverStandings: DriverStanding[]
+  season: string;
+  round: string;
+  DriverStandings: DriverStanding[];
 }
 
 export interface DriverStanding {
-  position: string
-  positionText: string
-  points: string
-  wins: string
-  Driver: Driver
-  Constructors: Constructor[]
+  position: string;
+  positionText: string;
+  points: string;
+  wins: string;
+  Driver: Driver;
+  Constructors: Constructor[];
 }
 
 export interface Circuit {

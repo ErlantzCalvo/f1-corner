@@ -23,8 +23,7 @@ export const ui = {
     constructor: "Constructor",
     finish_reason: "Termination reason",
     fast_lap: "Fast lap",
-    points: "Points"
-    
+    points: "Points",
   },
   es: {
     "nav.home": "Inicio",
@@ -42,6 +41,6 @@ export const ui = {
     constructor: "Escudería",
     finish_reason: "Motivo de finalización",
     fast_lap: "Vuelta rápida",
-    points: "Puntos"
+    points: "Puntos",
   },
 } as const;

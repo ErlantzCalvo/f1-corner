@@ -7,6 +7,6 @@ export default defineConfig({
   integrations: [prefetch()],
   image: {
     domains: ["upload.wikimedia.org"],
-    remotePatterns: [{ protocol: "https"}]
-  }
+    remotePatterns: [{ protocol: "https" }],
+  },
 });
