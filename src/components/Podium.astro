@@ -4,11 +4,13 @@ const {first, second, third} = Astro.props;
 ---
 <div class="container podium">
     <div class="podium__item">
-      <p class="podium__city">{second}</p>
+      <p class="podium__city">{second.name}</p>
+      <img class="driver-img" src={second.image} alt={second.name} height="100px">
       <div class="podium__rank second">2</div>
     </div>
     <div class="podium__item">
-      <p class="podium__city">{first}</p>
+      <p class="podium__city">{first.name}</p>
+      <img class="driver-img" src={first.image} alt={first.name} height="100px">
       <div class="podium__rank first">
         <svg class="podium__number" viewBox="0 0 27.476 75.03" xmlns="http://www.w3.org/2000/svg">
         <g transform="matrix(1, 0, 0, 1, 214.957736, -43.117417)">
@@ -18,7 +20,8 @@ const {first, second, third} = Astro.props;
       </div>
     </div>
     <div class="podium__item">
-      <p class="podium__city">{third}</p>
+      <p class="podium__city">{third.name}</p>
+      <img class="driver-img" src={third.image} alt={third.name} height="100px">
       <div class="podium__rank third">3</div>
     </div>
 </div>
@@ -87,6 +90,16 @@ const {first, second, third} = Astro.props;
     rgba(196, 145, 98, 1) 53%,
     rgba(184, 115, 51, 1) 100%
   );
+
+}
+
+.driver-img {
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.driver-img:hover {
+  transform: scale(2.25);
 }
 
 </style>
