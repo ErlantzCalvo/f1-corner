@@ -29,7 +29,6 @@ export const getArticleImage = (articleName: string): Promise<string | null> => 
       .then((data) => data as Promise<wikiImage>)
       .then((data) => {
         const pageKeys = Object.keys(data.query.pages)
-        console.log(data.query.pages[pageKeys[0]])
         if(pageKeys.length > 0 && pageKeys[0] !== "-1" && data.query.pages[pageKeys[0]].original){
             return data.query.pages[pageKeys[0]].original!.source;
         } else {

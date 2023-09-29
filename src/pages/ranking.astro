@@ -9,7 +9,7 @@ const standings = await getCurrentDriverStandings();
 const driversInfo = await Promise.all(standings.map( async ({ Driver: driver, points})  => {
 	const wikiUrlParts = driver.url.split('/');
 	const wikiDriverName = wikiUrlParts[wikiUrlParts.length - 1];
-	const imageUrl = await getArticleImage(wikiDriverName);
+	const imageUrl = await getArticleImage(wikiDriverName) || "/user.png";
 	return {
 		name: `${driver.givenName} ${driver.familyName}`,
 		points: points,
@@ -28,4 +28,11 @@ const driversInfo = await Promise.all(standings.map( async ({ Driver: driver, po
 		<Leaderboard items={driversInfo}/>
 	</section>
 </Layout>
+
+<style>
+	html {
+		overflow-x: hidden;
+	}
+
+</style>
 
