@@ -2,7 +2,7 @@
 import {getNextRaceData} from '../api/schedule'
 import Spinner from '../components/Spinner.astro'
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
-const {season, round, Races: races} = await getNextRaceData();
+const {season, round, Races: races } = await getNextRaceData();
 const dateString = `${races[0].date} ${races[0].time}`
 
 const lang = getLangFromUrl(Astro.url);
@@ -10,6 +10,7 @@ const t = useTranslations(lang);
 
 const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 const date = new Date(races[0].date).toLocaleDateString(lang, options);
+const circuit = races[0].Circuit;
 ---
 
 <next-race-info id="clock" data-time={dateString} data-daystext={t("next_race.days")} >
@@ -19,6 +20,7 @@ const date = new Date(races[0].date).toLocaleDateString(lang, options);
             <ul>
                 <li><strong>{t("next_race.round")}: </strong> {round}</li>
                 <li id="date"><strong>{t("next_race.date")}: </strong> {date}</li>
+                <li><strong>{t("circuit")}: </strong> <a href={circuit.url}>{circuit.circuitName} ({circuit.Location.country})</a></li>
             </ul>
         </article>
         <article>
@@ -117,6 +119,14 @@ p {
 
 html.dark #clock {
     text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
+}
+a {
+    text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+    filter: opacity(0.7);
 }
 
 </style>
