@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 interface Item {
   name: string;
   points: string;
@@ -10,10 +10,28 @@ interface Props {
   items: Item[];
 }
 const { items } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div id="leaderboard">
   <table>
+    <thead>
+      <tr>
+        <th class="number">
+          {t("position")}
+        </th>
+        <th class="driver-image"></th>
+        <th class="name">
+          {t("driver")}
+        </th>
+        <th class="points">
+          {t("points")}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
     {
       items?.map((item, idx) => (
         <tr
@@ -32,10 +50,12 @@ const { items } = Astro.props;
         </tr>
       ))
     }
+    </tbody>
   </table>
 </div>
 
 <style>
+  
   #leaderboard {
     width: 100%;
     position: relative;
@@ -52,19 +72,19 @@ const { items } = Astro.props;
     color: #c9cace;
   }
 
-  tr {
+  tbody > tr {
     transition: all 0.2s ease-in-out;
     border-radius: 0.2rem;
   }
 
-  tr:hover {
+  tbody > tr:hover {
     background-color: #fff;
     transform: scale(1.1);
     -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
     box-shadow: 0px 5px 15px 8px #e4e7fb;
   }
 
-  html.dark tr:hover {
+  html.dark tbody > tr:hover {
     background-color: #555353;
     color: #fff;
     box-shadow: 0px 5px 15px 8px #611f1f;
@@ -75,6 +95,10 @@ const { items } = Astro.props;
     font-size: 1.4rem;
     padding: 1rem;
     position: relative;
+  }
+
+  th.number {
+    font-size: unset;
   }
 
   .number {
