@@ -13,5 +13,14 @@ jobs:
         with:
           endpoint: https://ergast.com/api/f1/current/next.json
           save-location: next_race_date
+      - name: Get API results
       - run: |
-              cat ./next_race_date/data.json
+              content=`cat ./next_race_date/data.json`
+              # the following lines are only required for multi line json
+              content="${content//'%'/'%25'}"
+              content="${content//$'\n'/'%0A'}"
+              content="${content//$'\r'/'%0D'}"
+              # end of optional handling for multi line json
+              echo "::set-output name=nextDate::$content"
+      - run: |
+          echo "${{fromJson(steps.set_var.outputs.nextDate).MRData.RaceTable.Races[0].date}}"
