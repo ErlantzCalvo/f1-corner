@@ -21,24 +21,22 @@ jobs:
               content="${content//$'\n'/'%0A'}"
               content="${content//$'\r'/'%0D'}"
               # end of optional handling for multi line json
-              echo "{NEXT-DATE-JSON}={$content}" >> "$GITHUB_ENV"
-              # echo "::set-output name=nextDate::$content"
+              echo "next_date_json={content}" >> "$GITHUB_ENV"
       - name: Get next race date
         id: get_date
         run: |
           date="${{fromJson(steps.get_json.outputs.nextDate).MRData.RaceTable.Races[0].date}}"
           # time="${{fromJson(steps.get_json.outputs.nextDate).MRData.RaceTable.Races[0].time}}"
-          echo "{$date}"
-          echo "{NEXT-DATE}={$date}" >> "$GITHUB_ENV"
-          # echo "::set-output name=nextDate::$date"
+          echo "{date}"
+          echo "next_date={date}" >> "$GITHUB_ENV"
       - name: Get current date
         id: current_date
         run: |
           echo "{$(date +'%Y-%m-%d')}"
-          echo "{CURRENT-DATE}={$(date +'%Y-%m-%d')}" >> "$GITHUB_ENV"
+          echo "current_date={(date +'%Y-%m-%d')}" >> "$GITHUB_ENV"
           # echo "::set-output name=currentDate::$(date +'%Y-%m-%d')"
       - name: Build project
-        if: ${{ steps.current_date.outputs.currentDate <  steps.current_date.outputs.nextDate}}
+        if: ${{ $current_date <  $next_date}}
         run:  |
               echo "TODAVIA NO ES EL DIA"
       
