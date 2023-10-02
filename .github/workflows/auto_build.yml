@@ -1,7 +1,9 @@
 name: check next race date
-on:
-  schedule:
-    - cron: "0 5 * * MON"
+on: 
+  workflow_dispatch:
+# on:
+#  schedule:
+#   - cron: "0 5 * * MON"
 jobs:
   stale:
     runs-on: ubuntu-latest
