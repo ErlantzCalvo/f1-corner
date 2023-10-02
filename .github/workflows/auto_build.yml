@@ -5,7 +5,7 @@ on:
 #  schedule:
 #   - cron: "0 5 * * MON"
 jobs:
-  stale:
+  check_date:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch API Data 📦
@@ -37,8 +37,11 @@ jobs:
           date=`date -d '-6 hour' '+%s%3N'`
           echo "$date"
           echo "current_date=$date" >> "$GITHUB_OUTPUT"
-      - name: Build project
-        if: ${{ steps.current_date.outputs.current_date >  steps.get_date.outputs.next_date}}
-        run:  |
-              echo "TODAVIA NO ES EL DIA"
       
+    
+      
+  deploy_to_vercel:
+    if: jobs.check_date.steps.current_date.outputs.current_date > jobs.check_date.steps.get_date.outputs.next_date
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Vamos carajo"
