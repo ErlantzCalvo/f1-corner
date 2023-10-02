@@ -13,7 +13,7 @@ jobs:
         with:
           endpoint: https://ergast.com/api/f1/current/next.json
           save-location: next_race_date
-      - name: Get API results
+      - id: set_var
         run: |
               content=`cat ./next_race_date/data.json`
               # the following lines are only required for multi line json
