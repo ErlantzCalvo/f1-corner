@@ -29,13 +29,12 @@ jobs:
           time="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].time}}"
           composed="$date $time"
           fulltime=`date -d "$composed" '+%s%3N'`
-          fulltime="${{fulltime + 3600000}}"
           echo "$fulltime"
           echo "next_date=$fulltime" >> "$GITHUB_OUTPUT"
       - name: Get current date
         id: current_date
         run: |
-          date="$(($(date +%s%N)/1000000))"
+          date="date -d '-6 hour' '+%s%3N'"
           echo "$date"
           echo "current_date=$date" >> "$GITHUB_OUTPUT"
       - name: Build project
