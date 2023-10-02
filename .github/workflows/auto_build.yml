@@ -23,4 +23,4 @@ jobs:
               # end of optional handling for multi line json
               echo "::set-output name=nextDate::$content"
       - run: |
-          echo "${{fromJson(steps.set_var.outputs.nextDate).MRData}}"
+          echo "${{fromJson(steps.set_var.outputs.nextDate).MRData.RaceTable.Races[0].date}}"
