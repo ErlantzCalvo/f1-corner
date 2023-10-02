@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-            current_date=${{needs.check_date.current_date}}
-            next_date=${{needs.check_date.next_date}}
+            current_date=${{needs.check_date.outputs.current_date}}
+            next_date=${{needs.check_date.outputs.next_date}}
             echo "$current_date"
             echo "$next_date"
