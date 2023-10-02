@@ -30,18 +30,21 @@ jobs:
           composed="$date $time"
           fulltime=`date -d "$composed" '+%s%3N'`
           echo "$fulltime"
-          echo "next_date=$fulltime" >> "$GITHUB_ENV"
+          echo "next_date=$fulltime" >> "$GITHUB_OUTPUT"
       - name: Get current date
         id: current_date
         run: |
           date=`date -d '-6 hour' '+%s%3N'`
           echo "$date"
-          echo "current_date=$date" >> "$GITHUB_ENV"
+          echo "current_date=$date" >> "$GITHUB_OUTPUT"
+    outputs:
+      next_date: ${{ steps.get_date.outputs.next_date }}
+      current_date: ${{ steps.current_date.outputs.current_date }}
       
     
       
   deploy_to_vercel:
-    if: ${{ env.current_date > env.next_date }}
+    if: ${{ needs.check_date.current_date > needs.check_date.next_date }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Vamos carajo"
