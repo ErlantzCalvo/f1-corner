@@ -41,7 +41,7 @@ jobs:
     
       
   deploy_to_vercel:
-    if: ${{ $current_date > $next_date }}
+    if: ${{ env.current_date > env.next_date }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Vamos carajo"
