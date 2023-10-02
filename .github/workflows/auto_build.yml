@@ -12,4 +12,6 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: https://ergast.com/api/f1/current/next.json
-          save-location: next_race_date.json
+          save-location: next_race_date
+      - run: |
+              cat ./next_race_date/data.json
