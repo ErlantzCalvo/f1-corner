@@ -13,7 +13,7 @@ jobs:
         with:
           endpoint: https://ergast.com/api/f1/current/next.json
           save-location: next_race_date
-      - id: set_var
+      - id: get_json
         run: |
               content=`cat ./next_race_date/data.json`
               # the following lines are only required for multi line json
@@ -22,5 +22,17 @@ jobs:
               content="${content//$'\r'/'%0D'}"
               # end of optional handling for multi line json
               echo "::set-output name=nextDate::$content"
-      - run: |
-          echo "${{fromJson(steps.set_var.outputs.nextDate).MRData.RaceTable.Races[0].date}}"
+      - name: Get next race date
+        id: get_date
+        run: |
+          date="${{fromJson(steps.get_json.outputs.nextDate).MRData.RaceTable.Races[0].date}}"
+          # time="${{fromJson(steps.get_json.outputs.nextDate).MRData.RaceTable.Races[0].time}}"
+          echo "::set-output name=nextDate::$date"
+      - name: Get current date
+        id: current_date
+        run: echo "::set-output name=currentDate::$(date +'%Y-%m-%d')"
+      - name: Build project
+        if: ${{ steps.current_date.outputs.currentDate <  steps.current_date.outputs.nextDate}}
+        run:  |
+              echo "TODAVIA NO ES EL DIA"
+      
