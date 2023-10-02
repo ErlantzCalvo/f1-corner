@@ -26,16 +26,18 @@ jobs:
         id: get_date
         run: |
           date="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].date}}"
-          echo "$date"
-          echo "next_date=$date" >> "$GITHUB_OUTPUT"
+          time="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].time}}"
+          fulltime="date -d '$date $time' + '%s%3N'"
+          echo "$fulltime"
+          echo "next_date=$fulltime" >> "$GITHUB_OUTPUT"
       - name: Get current date
         id: current_date
         run: |
-          date="$(date +'%Y-%m-%d')"
+          date="$(($(date +%s%N)/1000000))"
           echo "$date"
           echo "current_date=$date" >> "$GITHUB_OUTPUT"
       - name: Build project
-        if: ${{ steps.current_date.outputs.current_date <  steps.get_date.outputs.next_date}}
+        if: ${{ steps.current_date.outputs.current_date >  steps.get_date.outputs.next_date}}
         run:  |
               echo "TODAVIA NO ES EL DIA"
       
