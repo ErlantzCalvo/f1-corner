@@ -45,7 +45,7 @@ jobs:
       
   deploy_to_vercel:
     needs: check_date
-    if: ${{ needs.check_date.current_date < needs.check_date.next_date }}
+    if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.next_date }}
     runs-on: ubuntu-latest
     steps:
       - run: |
