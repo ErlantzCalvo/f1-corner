@@ -34,7 +34,7 @@ jobs:
       - name: Get current date
         id: current_date
         run: |
-          date="date -d '-6 hour' '+%s%3N'"
+          date=`date -d '-6 hour' '+%s%3N'`
           echo "$date"
           echo "current_date=$date" >> "$GITHUB_OUTPUT"
       - name: Build project
