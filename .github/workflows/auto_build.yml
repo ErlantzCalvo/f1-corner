@@ -21,18 +21,19 @@ jobs:
               content="${content//$'\n'/'%0A'}"
               content="${content//$'\r'/'%0D'}"
               # end of optional handling for multi line json
-              echo "next_date_json={content}" >> "$GITHUB_OUTPUT"
+              echo "next_date_json=$content" >> "$GITHUB_OUTPUT"
       - name: Get next race date
         id: get_date
         run: |
           date="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].date}}"
           echo "{date}"
-          echo "next_date={date}" >> "$GITHUB_OUTPUT"
+          echo "next_date=$date" >> "$GITHUB_OUTPUT"
       - name: Get current date
         id: current_date
         run: |
-          echo "{$(date +'%Y-%m-%d')}"
-          echo "current_date={(date +'%Y-%m-%d')}" >> "$GITHUB_OUTPUT"
+          date="{$(date +'%Y-%m-%d')}"
+          echo "$date"
+          echo "current_date=$date" >> "$GITHUB_OUTPUT"
       - name: Build project
         if: ${{ steps.current_date.outputs.current_date <  steps.get_date.outputs.current_date}}
         run:  |
