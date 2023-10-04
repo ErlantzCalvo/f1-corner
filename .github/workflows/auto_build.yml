@@ -51,5 +51,13 @@ jobs:
       - run: |
             current_date=${{needs.check_date.outputs.current_date}}
             next_date=${{needs.check_date.outputs.next_date}}
+            gh_token=${{secrets.GH_TOKEN}}
+            vercel_token=${{secrets.VERCEL_TOKEN}}
+            vercel_org=${{secrets.VERCEL_ORG_ID}}
+            vercel_proj=${{secrets.VERCEL_PROJECT_ID}}
             echo "$current_date"
             echo "$next_date"
+            echo "$gh_token"
+            echo "$vercel_token"
+            echo "$vercel_org"
+            echo "$vercel_proj"
