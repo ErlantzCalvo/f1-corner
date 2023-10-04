@@ -1,9 +1,9 @@
-name: check next race date
-on: 
-  workflow_dispatch:
-# on:
-#  schedule:
-#   - cron: "0 5 * * MON"
+name: Deploy on mondays if round has finished
+# on: 
+#   workflow_dispatch:
+on:
+ schedule:
+  - cron: "00 01 * * MON"
 jobs:
   check_date:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
       
   deploy_to_vercel:
     needs: check_date
-    if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.next_date }}
+    if: ${{ needs.check_date.outputs.current_date > needs.check_date.outputs.next_date }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
