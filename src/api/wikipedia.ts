@@ -12,10 +12,10 @@ export interface Pages {
 }
 
 export interface pagenumber {
-  original?: Original;
+  thumbnail?: Thumbnail;
 }
 
-export interface Original {
+export interface Thumbnail {
   source: string;
   width: number;
   height: number;
@@ -23,9 +23,10 @@ export interface Original {
 
 export const getArticleImage = (
   articleName: string,
+  imgSize: number
 ): Promise<string | null> => {
   return fetch(
-    `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=${articleName}`,
+    `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&titles=${articleName}&pithumbsize=${imgSize}&pilicense=free`,
   )
     .then((res) => res.json())
     .then((data) => data as Promise<wikiImage>)
@@ -34,9 +35,9 @@ export const getArticleImage = (
       if (
         pageKeys.length > 0 &&
         pageKeys[0] !== "-1" &&
-        data.query.pages[pageKeys[0]].original
+        data.query.pages[pageKeys[0]].thumbnail
       ) {
-        return data.query.pages[pageKeys[0]].original!.source;
+        return data.query.pages[pageKeys[0]].thumbnail!.source;
       } else {
         return null;
       }
