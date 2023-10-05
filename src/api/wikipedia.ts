@@ -23,7 +23,7 @@ export interface Thumbnail {
 
 export const getArticleImage = (
   articleName: string,
-  imgSize: number
+  imgSize: number,
 ): Promise<string | null> => {
   return fetch(
     `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=thumbnail&titles=${articleName}&pithumbsize=${imgSize}&pilicense=free`,

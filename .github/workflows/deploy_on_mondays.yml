@@ -1,9 +1,9 @@
 name: Deploy on mondays if round has finished
-# on: 
+# on:
 #   workflow_dispatch:
 on:
- schedule:
-  - cron: "00 01 * * MON"
+  schedule:
+    - cron: "00 01 * * MON"
 jobs:
   check_date:
     runs-on: ubuntu-latest
@@ -15,13 +15,13 @@ jobs:
           save-location: next_race_date
       - id: get_json
         run: |
-              content=`cat ./next_race_date/data.json`
-              # the following lines are only required for multi line json
-              content="${content//'%'/'%25'}"
-              content="${content//$'\n'/'%0A'}"
-              content="${content//$'\r'/'%0D'}"
-              # end of optional handling for multi line json
-              echo "next_date_json=$content" >> "$GITHUB_OUTPUT"
+          content=`cat ./next_race_date/data.json`
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "next_date_json=$content" >> "$GITHUB_OUTPUT"
       - name: Get next race date
         id: get_date
         run: |
@@ -40,9 +40,7 @@ jobs:
     outputs:
       next_date: ${{ steps.get_date.outputs.next_date }}
       current_date: ${{ steps.current_date.outputs.current_date }}
-      
-    
-      
+
   deploy_to_vercel:
     needs: check_date
     if: ${{ needs.check_date.outputs.current_date > needs.check_date.outputs.next_date }}
@@ -57,4 +55,3 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-            
