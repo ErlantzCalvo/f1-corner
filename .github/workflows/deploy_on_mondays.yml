@@ -11,7 +11,7 @@ jobs:
       - name: Fetch API Data 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: https://ergast.com/api/f1/current/next.json
+          endpoint: https://ergast.com/api/f1/current/last.json
           save-location: next_race_date
       - id: get_json
         run: |
@@ -21,29 +21,29 @@ jobs:
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
-          echo "next_date_json=$content" >> "$GITHUB_OUTPUT"
+          echo "last_date_json=$content" >> "$GITHUB_OUTPUT"
       - name: Get next race date
         id: get_date
         run: |
-          date="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].date}}"
-          time="${{fromJson(steps.get_json.outputs.next_date_json).MRData.RaceTable.Races[0].time}}"
+          date="${{fromJson(steps.get_json.outputs.last_date_json).MRData.RaceTable.Races[0].date}}"
+          time="${{fromJson(steps.get_json.outputs.last_date_json).MRData.RaceTable.Races[0].time}}"
           composed="$date $time"
           fulltime=`date -d "$composed" '+%s%3N'`
           echo "$fulltime"
-          echo "next_date=$fulltime" >> "$GITHUB_OUTPUT"
+          echo "last_date=$fulltime" >> "$GITHUB_OUTPUT"
       - name: Get current date
         id: current_date
         run: |
-          date=`date -d '-6 hour' '+%s%3N'`
+          date=`date -d '-24 hour' '+%s%3N'`
           echo "$date"
           echo "current_date=$date" >> "$GITHUB_OUTPUT"
     outputs:
-      next_date: ${{ steps.get_date.outputs.next_date }}
+      last_date: ${{ steps.get_date.outputs.last_date }}
       current_date: ${{ steps.current_date.outputs.current_date }}
 
   deploy_to_vercel:
     needs: check_date
-    if: ${{ needs.check_date.outputs.current_date > needs.check_date.outputs.next_date }}
+    if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.last_date }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
