@@ -48,8 +48,11 @@ document.addEventListener('astro:page-load', () => {
             const time = nextRaceInfo.querySelector('#time');
             if (time) {
                 nextRaceInfo.remainingMs -= 1000;
-                if(nextRaceInfo.remainingMs < 1000) clearInterval(nextRaceInfo.timerID)
                 time.innerHTML = dhm(nextRaceInfo.remainingMs, nextRaceInfo.daystext);
+                if(nextRaceInfo.remainingMs < 1000) {
+                    clearInterval(nextRaceInfo.timerID);
+                    time.innerHTML = "The race is on!";
+                }
             } else {
                 clearInterval(nextRaceInfo.timerID)
             }
