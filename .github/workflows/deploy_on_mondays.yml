@@ -3,7 +3,7 @@ name: Deploy on mondays if round has finished
 #   workflow_dispatch:
 on:
   schedule:
-    - cron: "00 01 * * MON"
+    - cron: "00 04 * * MON"
 jobs:
   check_date:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
 
   deploy_to_vercel:
     needs: check_date
-    if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.last_date }}
+    # if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.last_date }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
