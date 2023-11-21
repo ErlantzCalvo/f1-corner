@@ -11,6 +11,8 @@ export const ui = {
     "nav.home": "Home",
     "nav.ranking": "Ranking",
     "nav.qualifying": "Qualifying",
+    "nav.ranking.drivers": "Drivers",
+    "nav.ranking.constructors": "Constructors",
     "next_race.days": "Days",
     "next_race.date": "Date",
     "next_race.round": "Round",
@@ -28,6 +30,8 @@ export const ui = {
   es: {
     "nav.home": "Inicio",
     "nav.ranking": "Clasificación",
+    "nav.ranking.drivers": "Pilotos",
+    "nav.ranking.constructors": "Escuderías",
     "nav.qualifying": "Quali",
     "next_race.days": "Días",
     "next_race.date": "Fecha",

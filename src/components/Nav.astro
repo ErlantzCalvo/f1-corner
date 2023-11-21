@@ -13,11 +13,15 @@ const translatePath = useTranslatedPath(lang);
 interface Link {
 	href: string;
 	text: string;
+	links?: Link[];
 }
 
 const links: Link[] = [
 	{ href: translatePath('/'), text: t('nav.home') },
-	{ href: translatePath('/ranking'), text: t('nav.ranking') },
+	{ href: translatePath('/ranking'), text: t('nav.ranking'), links: [
+		{href: translatePath('/ranking/drivers'), text: t('nav.ranking.drivers')},
+		{href: translatePath('/ranking/constructors'), text: t('nav.ranking.constructors')}
+	]},
 	{ href: translatePath('/qualifying'), text: t('nav.qualifying') },
 ];
 ---

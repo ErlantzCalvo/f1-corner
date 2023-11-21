@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Leaderboard from '../components/Leaderboard.astro';
+import Podium from '../components/Podium.astro';
+
+interface Props {
+    currentRanking: string;
+    itemsInfo: {
+        name: string,
+		points: string,
+		image: string | null
+    }[]
+}
+
+const {currentRanking, itemsInfo} = Astro.props;
+
+---
+
+<Layout title='Ranking'>
+	<h1>Ranking ({currentRanking})</h1>
+	<section>
+		<Podium first={itemsInfo.length > 0? itemsInfo[0] : null} 
+			second={itemsInfo.length > 1? itemsInfo[1] : null} 
+			third={itemsInfo.length > 2? itemsInfo[2] : null}/>
+		<Leaderboard items={itemsInfo}/>
+	</section>
+</Layout>
+
+<style>
+	html {
+		overflow-x: hidden;
+	}
+
+</style>
+

@@ -42,7 +42,8 @@ export interface StandingsTable {
 export interface StandingsList {
   season: string;
   round: string;
-  DriverStandings: DriverStanding[];
+  DriverStandings?: DriverStanding[];
+  ConstructorStandings?: ConstructorStanding[];
 }
 
 export interface DriverStanding {
@@ -52,6 +53,14 @@ export interface DriverStanding {
   wins: string;
   Driver: Driver;
   Constructors: Constructor[];
+}
+
+export interface ConstructorStanding {
+  position: string;
+  positionText: string;
+  points: string;
+  wins: string;
+  Constructor: Constructor;
 }
 
 export interface Circuit {

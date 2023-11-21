@@ -1,4 +1,4 @@
-import type { DriverStanding, RaceInfo } from "../types";
+import type { ConstructorStanding, DriverStanding, RaceInfo } from "../types";
 
 export const getCurrentDriverStandings = function (): Promise<
   DriverStanding[]
@@ -7,6 +7,18 @@ export const getCurrentDriverStandings = function (): Promise<
     .then((res) => res.json())
     .then((data) => data as Promise<RaceInfo>)
     .then(
-      (data) => data.MRData.StandingsTable!.StandingsLists[0].DriverStandings,
+      (data) => data.MRData.StandingsTable!.StandingsLists[0].DriverStandings!,
+    );
+};
+
+export const getCurrentContructorStandings = function (): Promise<
+  ConstructorStanding[]
+> {
+  return fetch("https://ergast.com/api/f1/current/constructorStandings.json")
+    .then((res) => res.json())
+    .then((data) => data as Promise<RaceInfo>)
+    .then(
+      (data) =>
+        data.MRData.StandingsTable!.StandingsLists[0].ConstructorStandings!,
     );
 };

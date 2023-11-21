@@ -1,0 +1,24 @@
+---
+import {getCurrentContructorStandings} from '../../api/standings'
+import RankingLayout from '../../layouts/RankingLayout.astro';
+
+const standings = await getCurrentContructorStandings();
+const constructorsInfo = await Promise.all(standings.map( async ({ Constructor: constructor, points})  => {
+	return {
+		name: constructor.name,
+		points: points,
+		image: `https://eeleabeg.sirv.com/f1/teams/logos/${constructor.name.split(' ')[0]}.png?w=100&h=100`
+	}
+}))
+
+---
+
+<RankingLayout currentRanking='Constructors' itemsInfo={constructorsInfo}/>
+
+<style>
+	html {
+		overflow-x: hidden;
+	}
+
+</style>
+
