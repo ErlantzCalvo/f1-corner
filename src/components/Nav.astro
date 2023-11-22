@@ -16,7 +16,7 @@ interface Link {
 	links?: Link[];
 }
 
-const links: Link[] = [
+const sections: Link[] = [
 	{ href: translatePath('/'), text: t('nav.home') },
 	{ href: translatePath('/ranking'), text: t('nav.ranking'), links: [
 		{href: translatePath('/ranking/drivers'), text: t('nav.ranking.drivers')},
@@ -29,18 +29,36 @@ const links: Link[] = [
 <header>
 	<nav aria-label="Main menu">
 		<input type="checkbox" id="nav-check">
-        <a href={translatePath('/')} >
-            <Image src={logo} alt="logo: man with a wheel" width="32" height="32"/>
-        </a>
-		<div class="nav-links">
-			{
-				links.map(({ href, text }) => (
-					<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} rel="prefetch-intent" >
-						<strong>{text}</strong>
+			<ul class="nav-links">
+				<li>
+					<a href={translatePath('/')} >
+						<Image src={logo} alt="logo: man with a wheel" width="32" height="32"/>
 					</a>
+				</li>
+			{
+				sections.map(({ href, text, links }) => (
+					<li>
+						<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} 
+						rel="prefetch-intent" class:list={[{parent_url: links && links.length > 0}]}>
+							<strong>{text}</strong> &nbsp;
+							{links && links.length > 0 && <img src="/caret-down.svg">}
+						</a>
+						{links && 
+							
+							<ul>
+							{links.map(({href, text}) => (
+								<li>
+									<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} rel="prefetch-intent" >
+										<strong>{text}</strong>
+									</a>
+								</li>
+							))}
+						</ul>
+					}
+					</li>
 				))
 			}
-		</div>
+			</ul>
 		<div class="nav-btn">
 			<label for="nav-check">
 			  <span></span>

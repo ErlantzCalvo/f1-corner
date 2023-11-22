@@ -14,8 +14,10 @@ nav {
   box-sizing: border-box;
   padding: 15px;
 }
-
-nav a {
+nav > ul > li {
+  float: left;
+}
+nav ul li a {
   color: var(--secondary-color);
   line-height: 24px;
   transition: color 0.15s ease;
@@ -25,6 +27,32 @@ nav a {
   letter-spacing: 0.075em;
   margin-right: 1.8em;
   text-decoration: none;
+}
+
+nav li ul li {
+  position: relative;
+}
+
+nav ul li ul {
+  padding-inline-start: unset;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+nav li ul {
+  /* display:none; */
+  position: absolute;
+  min-width: 140px;
+  transition: all 0.3s;
+  height: 0px;
+  overflow: hidden;
+}
+
+nav li:hover > ul {
+  /* display:block; */
+  background-color: #990011e3;
+  height: 70px;
 }
 
 nav a:hover {
@@ -57,10 +85,14 @@ nav > .nav-links {
   a {
     margin-right: 1em;
   }
+
+  nav > ul > li:first-child {
+    display: none;
+  }
+
   nav > .nav-btn {
     display: inline-block;
     position: absolute;
-    left: 64px;
     top: 0px;
   }
   nav > .nav-btn > label {
@@ -90,16 +122,44 @@ nav > .nav-links {
     top: 50px;
     left: 0px;
   }
-  nav > .nav-links > a {
+  nav > .nav-links > li a {
     display: block;
     width: 100%;
     padding: 0.3em;
   }
+
+  nav > ul > li {
+    float: unset;
+  }
+
+  nav li ul {
+    position: relative;
+  }
+
   nav > #nav-check:not(:checked) ~ .nav-links {
     height: 0px;
   }
   nav > #nav-check:checked ~ .nav-links {
     height: calc(25vh - 50px);
     overflow-y: auto;
+  }
+
+  .parent_url {
+    pointer-events: none;
+  }
+
+  nav > li > ul:not(:checked) {
+    /* display:none; */
+    height: 0px;
+  }
+
+  nav > li > ul > a:checked {
+    /* display:none; */
+    height: 70px;
+    overflow-y: auto;
+  }
+
+  nav > li > ul:focus ~ .nav-links {
+    height: calc(45vh - 50px);
   }
 }
