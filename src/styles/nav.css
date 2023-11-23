@@ -41,7 +41,6 @@ nav ul li ul {
 }
 
 nav li ul {
-  /* display:none; */
   position: absolute;
   min-width: 140px;
   transition: all 0.3s;
@@ -50,9 +49,12 @@ nav li ul {
 }
 
 nav li:hover > ul {
-  /* display:block; */
   background-color: #990011e3;
-  height: 70px;
+  height: auto;
+}
+
+.parent_url:after {
+  content: url("/caret-down.svg");
 }
 
 nav a:hover {
@@ -119,7 +121,7 @@ nav > .nav-links {
     height: 0px;
     transition: all 0.3s ease-in;
     overflow: hidden;
-    top: 50px;
+    top: 30px;
     left: 0px;
   }
   nav > .nav-links > li a {
@@ -132,15 +134,11 @@ nav > .nav-links {
     float: unset;
   }
 
-  nav li ul {
-    position: relative;
-  }
-
   nav > #nav-check:not(:checked) ~ .nav-links {
     height: 0px;
   }
   nav > #nav-check:checked ~ .nav-links {
-    height: calc(25vh - 50px);
+    height: calc(100vh - 50px);
     overflow-y: auto;
   }
 
@@ -148,18 +146,14 @@ nav > .nav-links {
     pointer-events: none;
   }
 
-  nav > li > ul:not(:checked) {
-    /* display:none; */
-    height: 0px;
+  nav ul li > ul {
+    background-color: unset;
+    position: relative;
+    background-color: unset;
+    padding-left: 25px;
   }
 
-  nav > li > ul > a:checked {
-    /* display:none; */
-    height: 70px;
-    overflow-y: auto;
-  }
-
-  nav > li > ul:focus ~ .nav-links {
-    height: calc(45vh - 50px);
+  nav li:hover > ul {
+    background-color: unset;
   }
 }
