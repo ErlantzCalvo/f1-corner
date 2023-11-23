@@ -20,7 +20,7 @@ export function useTranslatedPath(lang: keyof typeof ui) {
       if (l !== defaultLang) pathParts[1] = l;
       else pathParts.splice(1, 1);
       return pathParts.join("/");
-    } else if (pathParts.length === 2 && l !== defaultLang) {
+    } else if (pathParts.length >= 2 && l !== defaultLang) {
       //  '/ranking'  ->  '/es/ranking'
       pathParts.splice(1, 0, l);
       return pathParts.join("/");

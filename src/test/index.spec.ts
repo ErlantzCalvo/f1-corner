@@ -7,17 +7,14 @@ test.beforeEach(async ({ page }) => {
 test("Titles are correct", async ({ page }) => {
   await expect(page).toHaveTitle("F1-corner");
 
-  await page.goto("/qualifying");
-  await expect(page).toHaveTitle("Qualifying");
+  await page.goto("/races");
+  await expect(page).toHaveTitle("Race");
 
   await page.goto("/ranking");
   await expect(page).toHaveTitle("Ranking");
 
   await page.goto("/es/");
   await expect(page).toHaveTitle("F1-corner");
-
-  await page.goto("/es/qualifying");
-  await expect(page).toHaveTitle("Clasificación");
 
   await page.goto("/es/ranking");
   await expect(page).toHaveTitle("Ranking");

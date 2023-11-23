@@ -21,14 +21,14 @@ test("Redirect language", async ({ page }) => {
   await expect(page).toHaveURL("/es/");
 
   // in /ranking -> click spanish -> redirect to /es/ranking/
-  await page.goto("/ranking");
+  await page.goto("/ranking/drivers");
   await langButton.click();
   await page.getByRole("option", { name: "Español" }).click();
-  await expect(page).toHaveURL("/es/ranking");
+  await expect(page).toHaveURL("/es/ranking/drivers");
 
-  // in /es/qualifying -> click englihs -> redirect to /qualifying
-  await page.goto("/es/qualifying");
+  // in /es/races -> click english -> redirect to /races
+  await page.goto("/es/races/last");
   await langButton.click();
   await page.getByRole("option", { name: "English" }).click();
-  await expect(page).toHaveURL("/qualifying");
+  await expect(page).toHaveURL("/races/last");
 });

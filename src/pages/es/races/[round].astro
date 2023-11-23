@@ -1,0 +1,19 @@
+---
+import { getAllSeasonRaces } from '../../../api/races';
+import Layout from '../../../layouts/Layout.astro';
+import RaceResults from '../../../components/RaceResults.astro'
+
+export async function getStaticPaths() {
+    const allRaces = await getAllSeasonRaces();
+    const allLinks = allRaces?.Races.map( race => ({params: { round: race.round}})) 
+    allLinks?.push({params: { round: 'last'}})
+    return allLinks
+}
+
+const {round} = Astro.params;
+
+
+---
+<Layout title="Race">
+    <RaceResults race={round}/>
+</Layout>

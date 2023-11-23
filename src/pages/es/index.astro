@@ -1,12 +1,7 @@
 ---
 import NextRace from '../../components/NextRaceInfo.astro';
+import RaceInfo from '../../components/RaceResults.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getLastRaceResults } from '../../api/results'
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-
-const {Circuit, Results} = await getLastRaceResults();
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 ---
 
 <Layout title="F1-corner">
@@ -14,60 +9,10 @@ const t = useTranslations(lang);
 		<h2>Próxima carrera</h2>
 		<NextRace daysText="days" />
 	</section>
-	<section>
-		<h2>Resultados de la última carrera</h2>
-		<div class="last-race-results">
-		<h4 class="circuit">{t("circuit")}:&nbsp;&nbsp;  <a href={Circuit.url}>{Circuit.circuitName} ({Circuit.Location.country})</a></h4>
-		<table>
-			<thead>
-				<th class="hiddeable"></th>
-				<th>{t("position")}</th>
-				<th>{t("driver")}</th>
-				<th></th>
-				<th class="hiddeable">{t("finish_reason")}</th>
-			</thead>
-			<tbody>
-				{
-					Results?.map((result, position) => (
-						<tr>
-							<td class="hiddeable">
-							{result.FastestLap?.rank === "1" &&
-							<span class="fast-lap" title={t("fast_lap")}>
-								<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fast-lap-ico"></path> </g></svg>
-								{result.FastestLap?.Time.time}</span>
-							}
-							</td>
-							<td class="position-cell">
-								{position + 1}
-							</td>
-							<td>
-								{result.Driver.givenName}&nbsp;{result.Driver.familyName}
-							</td> 
-							<td>
-								<span class:list={['constructor', result.Constructor.constructorId]}>
-									<a href={result.Constructor.url} title={result.Constructor.name}><img src={`https://eeleabeg.sirv.com/f1/teams/logos/${result.Constructor.name.split(' ')[0]}.png?w=25&h=25`}></a>
-								</span>
-							</td>
-							<td class="hiddeable">
-								{result.status}
-							</td>
-						</tr>
-					))
-				}
-			</tbody>
-		</table>
-	</div>
-	</section>
+	<RaceInfo race="last" />
 </Layout>
 
 <style>
-.fast-lap > svg {
-	margin-right: 3px;
-}
-html.dark .fast-lap > svg path {
-	stroke: white;
-}
-
 section {
   border-radius: 10px;
   margin-bottom: 15px;
@@ -76,71 +21,6 @@ section {
 
 html.dark section {
 	box-shadow: rgba(255, 255, 255, 0.35) 0px 0.0625em 0.625em, rgba(255, 255, 255, 0.35) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-}
-
-
-table {
-	width: 100%;
-}
-
-tbody {
-	font-size: 0.75em;
-}
-
-.fast-lap {
-	margin-right: 1em;
-	font-size: 0.75em;
-}
-
-.fast-lap > img {
-	margin-right: 3px;
-}
-
-
-.position-cell {
-	text-align: center;
-}
-
-.last-race-results {
-	text-align: left;
-	margin: auto;
-	width: 60%;
-}
-
-.constructor > a > img{
-	border-radius: 15px;
-	padding: 0 5px;
-	font-weight: bold;
-}
-.circuit > a,
-.constructor > a {
-	text-decoration: none;
-	color: inherit;
-}
-
-a:hover {
-	filter: brightness(50%);
-}
-.constructor.red_bull > a > img {
-	background-color: #1e41ffa6;
-}
-
-.constructor.mclaren > a > img {
-	background-color: #e37708;
-}
-
-.constructor.alpine > a > img{
-	background-color: #f071ca;
-}
-.constructor.alphatauri > a > img{
-	background-color: #F1F3F4;
-}
-
-@media (max-width:730px) {
-    .hiddeable {display:none}
-	.last-race-results {width: 80%;}
-	th:nth-child(2) {padding-right: 20px;}
-
 }
 
 </style>

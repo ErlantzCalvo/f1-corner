@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Leaderboard from '../components/Leaderboard.astro';
 import Podium from '../components/Podium.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 interface Props {
     currentRanking: string;
@@ -14,10 +15,12 @@ interface Props {
 
 const {currentRanking, itemsInfo} = Astro.props;
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout title='Ranking'>
-	<h1>Ranking ({currentRanking})</h1>
+	<h1>{t('nav.ranking')} ({currentRanking})</h1>
 	<section>
 		<Podium first={itemsInfo.length > 0? itemsInfo[0] : null} 
 			second={itemsInfo.length > 1? itemsInfo[1] : null} 

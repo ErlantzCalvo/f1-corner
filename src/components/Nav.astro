@@ -5,16 +5,20 @@ import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/util
 import { Image } from "astro:assets";
 import logo from "../../public/logo.svg";
 import '../styles/nav.css'
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+import { getAllSeasonRaces } from '../api/races';
 
 interface Link {
 	href: string;
 	text: string;
 	links?: Link[];
 }
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const allRaces = await getAllSeasonRaces();
+const racesLinks: Link[] = allRaces?.Races.map( race => ({href: `/races/${race.round}`, text: race.raceName}) ) as Link[]
+racesLinks.splice(racesLinks.length - 1, 1);
 
 const sections: Link[] = [
 	{ href: translatePath('/'), text: t('nav.home') },
@@ -22,7 +26,7 @@ const sections: Link[] = [
 		{href: translatePath('/ranking/drivers'), text: t('nav.ranking.drivers')},
 		{href: translatePath('/ranking/constructors'), text: t('nav.ranking.constructors')}
 	]},
-	{ href: translatePath('/qualifying'), text: t('nav.qualifying') },
+	{ href: translatePath('/races/last'), text: t('nav.races'), links: racesLinks },
 ];
 ---
 
@@ -41,11 +45,9 @@ const sections: Link[] = [
 						<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} 
 						rel="prefetch-intent" class:list={[{parent_url: links && links.length > 0}]}>
 							<strong>{text}</strong> &nbsp;
-							{links && links.length > 0 && <img src="/caret-down.svg">}
 						</a>
 						{links && 
-							
-							<ul>
+						<ul>
 							{links.map(({href, text}) => (
 								<li>
 									<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} rel="prefetch-intent" >
