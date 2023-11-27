@@ -1,6 +1,5 @@
 ---
 import {getNextRaceData} from '../api/schedule'
-import Spinner from '../components/Spinner.astro'
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import type { Circuit } from '../types';
 const {season, round, Races: races } = await getNextRaceData();
@@ -37,7 +36,7 @@ if(races && races.length > 0) {
         </article>
         <article>
             <h3>{t("next_race.time_remaining")}</h3>
-            <div id="time"><Spinner /></div>
+            <div id="time">{dateString}</div>
         </article>
     </div>
 </next-race-info>
