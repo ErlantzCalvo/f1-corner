@@ -17,6 +17,8 @@ export default defineConfig({
   },
   redirects: {
     "/ranking": "/ranking/drivers",
+    "/es/ranking": "/es/ranking/drivers",
     "/races": "/races/last",
+    "/es/races": "/es/races/last",
   },
 });
