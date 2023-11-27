@@ -2,15 +2,22 @@
 import {getNextRaceData} from '../api/schedule'
 import Spinner from '../components/Spinner.astro'
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { Circuit } from '../types';
 const {season, round, Races: races } = await getNextRaceData();
-const dateString = `${races[0].date} ${races[0].time}`
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-const date = new Date(races[0].date).toLocaleDateString(lang, options);
-const circuit = races[0].Circuit;
+let dateString: string = t("next_race.unknown_date");
+let date: string = t("next_race.unknown_date");
+let circuit: Circuit | undefined;
+if(races && races.length > 0) {
+    dateString = `${races[0].date} ${races[0].time}`
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    date = new Date(races[0].date).toLocaleDateString(lang, options);
+    circuit = races[0].Circuit;
+}
+
 ---
 
 <next-race-info id="clock" data-time={dateString} data-daystext={t("next_race.days")} >
@@ -20,7 +27,12 @@ const circuit = races[0].Circuit;
             <ul>
                 <li><strong>{t("next_race.round")}: </strong> {round}</li>
                 <li id="date"><strong>{t("next_race.date")}: </strong> {date}</li>
-                <li><strong>{t("circuit")}: </strong> <a href={circuit.url}>{circuit.circuitName} ({circuit.Location.country})</a></li>
+                <li>
+                    <strong>{t("circuit")}: </strong> 
+                    {circuit ?
+                    (<a href={circuit?.url}>{circuit?.circuitName} ({circuit?.Location.country})</a>)
+                    :(<span>{t("next_race.unknown_circuit")}</span>)</li>
+                    }
             </ul>
         </article>
         <article>
@@ -37,11 +49,15 @@ document.addEventListener('astro:page-load', () => {
         constructor() {
             super();
             const component = this;
-            this.time = new Date(this.dataset.time);
             this.daystext = this.dataset.daystext
-            this.remainingMs = this.time - new Date();
-            this.updateTime(component);
-            this.timerID = setInterval(() => this.updateTime(component), 1000);
+            if(isDate(this.dataset.time)) {
+                this.time = new Date(this.dataset.time);
+                this.remainingMs = this.time - new Date();
+                this.updateTime(component);
+                this.timerID = setInterval(() => this.updateTime(component), 1000);
+            } else {
+                component.querySelector('#time').innerHTML = this.dataset.time;
+            }
         }
 
         updateTime(nextRaceInfo) {
@@ -80,6 +96,10 @@ function dhm(ms, daysText) {
     const minutesms = ms % (60 * 1000);
     const sec = Math.floor(minutesms / 1000);
     return zeroPadding(days) + " " + daysText + " " + zeroPadding(hours, 2) + ":" + zeroPadding(minutes, 2) + ":" + zeroPadding(sec, 2);
+}
+
+function isDate(date) {
+    return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
 }
 
 </script>
