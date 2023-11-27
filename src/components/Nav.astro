@@ -18,7 +18,6 @@ const translatePath = useTranslatedPath(lang);
 
 const allRaces = await getAllSeasonRaces();
 const racesLinks: Link[] = allRaces?.Races.map( race => ({href: `/races/${race.round}`, text: race.raceName}) ) as Link[]
-racesLinks.splice(racesLinks.length - 1, 1);
 
 const sections: Link[] = [
 	{ href: translatePath('/'), text: t('nav.home') },
