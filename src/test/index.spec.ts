@@ -18,6 +18,9 @@ test("Titles are correct", async ({ page }) => {
 
   await page.goto("/es/ranking");
   await expect(page).toHaveTitle("Ranking");
+
+  await page.goto("/invented");
+  await expect(page).toHaveTitle("404");
 });
 
 test("Navigation with nav links", async ({ page }) => {
