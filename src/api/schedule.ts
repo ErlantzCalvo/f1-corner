@@ -6,3 +6,10 @@ export const getNextRaceData = (): Promise<RaceTable> => {
     .then((data) => data as Promise<RaceInfo>)
     .then((data) => data.MRData.RaceTable!);
 };
+
+export const getRoundData = (round: number): Promise<RaceTable> => {
+  return fetch(`https://ergast.com/api/f1/current/${round}.json`)
+    .then((res) => res.json())
+    .then((data) => data as Promise<RaceInfo>)
+    .then((data) => data.MRData.RaceTable!);
+};

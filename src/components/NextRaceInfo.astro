@@ -1,9 +1,15 @@
 ---
-import {getNextRaceData} from '../api/schedule'
+import {getNextRaceData, getRoundData} from '../api/schedule'
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import type { Circuit } from '../types';
-const {season, round, Races: races } = await getNextRaceData();
 
+const {raceRound} = Astro.props
+
+let raceData = null
+if(raceRound) raceData = await getRoundData(raceRound)
+else raceData = await getNextRaceData();
+
+const { round, Races: races } = raceData
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
