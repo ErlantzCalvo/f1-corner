@@ -6,8 +6,6 @@ on:
     - cron: "00 04 * * MON"
 jobs:
   deploy_to_vercel:
-    needs: check_date
-    # if: ${{ needs.check_date.outputs.current_date < needs.check_date.outputs.last_date }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
