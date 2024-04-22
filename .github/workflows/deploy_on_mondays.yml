@@ -1,4 +1,4 @@
-name: Deploy on mondays if round has finished
+name: Deploy on mondays
 # on:
 #   workflow_dispatch:
 on:
