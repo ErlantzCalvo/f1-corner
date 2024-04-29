@@ -3,7 +3,7 @@ name: Deploy on mondays
 #   workflow_dispatch:
 on:
   schedule:
-    - cron: "00 10 * * MON"
+    - cron: "00 08 * * MON"
 jobs:
   run:
     runs-on: ubuntu-latest
