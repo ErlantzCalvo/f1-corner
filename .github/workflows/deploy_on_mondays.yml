@@ -1,6 +1,4 @@
 name: Deploy on mondays
-# on:
-#   workflow_dispatch:
 on:
   schedule:
     - cron: "00 04 * * MON"
@@ -17,7 +15,7 @@ jobs:
           name: Install pnpm
           id: pnpm-install
           with:
-            version: 9
+            version: 10
             run_install: false
         - name: Install Vercel CLI
           run: npm install --global vercel@latest
