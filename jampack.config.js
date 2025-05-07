@@ -2,17 +2,17 @@
 
 const default_options = {
   general: {
-    browserslist: 'defaults', // defaults = '> 0.5%, last 2 versions, Firefox ESR, not dead'
+    browserslist: "defaults", // defaults = '> 0.5%, last 2 versions, Firefox ESR, not dead'
   },
   html: {
-    add_css_reset_as: 'off',
+    add_css_reset_as: "off",
     sort_attributes: false,
   },
   css: {
     inline_critical_css: false,
   },
   js: {
-    compressor: 'esbuild',
+    compressor: "esbuild",
   },
   image: {
     embed_size: 1500,
@@ -20,12 +20,12 @@ const default_options = {
     srcset_max_width: 1920 * 2, // 4K
     max_width: 99999,
     external: {
-      process: 'off',
+      process: "off",
       src_include: /^.*$/,
       src_exclude: null,
     },
     cdn: {
-      process: 'off',
+      process: "off",
       src_include: /^.*$/,
       src_exclude: null,
     },
@@ -45,12 +45,12 @@ const default_options = {
       options_lossless: {
         effort: 4,
         quality: 77,
-        mode: 'lossless',
+        mode: "lossless",
       },
       options_lossly: {
         effort: 4,
         quality: 77,
-        mode: 'lossly',
+        mode: "lossly",
       },
     },
     svg: {
@@ -59,7 +59,7 @@ const default_options = {
     },
   },
   misc: {
-    prefetch_links: 'off',
+    prefetch_links: "off",
   },
 };
 

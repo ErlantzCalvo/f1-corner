@@ -14,7 +14,9 @@ export const getCurrentDriverStandings = function (): Promise<
 export const getCurrentContructorStandings = function (): Promise<
   ConstructorStanding[]
 > {
-  return fetch("https://api.jolpi.ca/ergast/f1/current/constructorStandings.json")
+  return fetch(
+    "https://api.jolpi.ca/ergast/f1/current/constructorStandings.json",
+  )
     .then((res) => res.json())
     .then((data) => data as Promise<RaceInfo>)
     .then(
