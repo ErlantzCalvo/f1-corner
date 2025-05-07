@@ -1,0 +1,25 @@
+{
+    "redirects": [
+      {
+        "source": "/ranking",
+        "destination": "/ranking/drivers",
+        "permanent": true
+      },
+      {
+        "source": "/es/ranking",
+        "destination": "/es/ranking/drivers",
+        "permanent": true
+      },
+      {
+        "source": "/races",
+        "destination": "/races/last",
+        "permanent": true
+      },
+      {
+        "source": "/es/races",
+        "destination": "/es/races/last",
+        "permanent": true
+      }
+    ]
+  }
+  

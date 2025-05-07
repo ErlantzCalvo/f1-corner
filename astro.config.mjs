@@ -15,10 +15,5 @@ export default defineConfig({
     domains: ["upload.wikimedia.org"],
     remotePatterns: [{ protocol: "https" }],
   },
-  redirects: {
-    "/ranking": "/ranking/drivers",
-    "/es/ranking": "/es/ranking/drivers",
-    "/races": "/races/last",
-    "/es/races": "/es/races/last",
-  },
+ 
 });
