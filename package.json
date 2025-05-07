@@ -12,11 +12,10 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@astrojs/prefetch": "^0.4.0",
     "@astrojs/vercel": "^8.0.4",
     "@fontsource/titillium-web": "^5.0.12",
     "astro": "5.7.11",
-    "sharp": "^0.32.6"
+    "sharp": "^0.34.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.38.0",
