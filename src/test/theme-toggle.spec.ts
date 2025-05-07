@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
 
 test("Toggle theme", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", {
+    waitUntil: "domcontentloaded",
+  });
   const themeToggle = page.locator("#themeToggler label");
   await themeToggle.click();
   await expect(page.locator("html")).toHaveClass("dark");
