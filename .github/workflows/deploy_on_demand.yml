@@ -1,4 +1,4 @@
-name: Deploy on mondays
+name: Deploy on demand
 on:
   workflow_dispatch:
 jobs:
