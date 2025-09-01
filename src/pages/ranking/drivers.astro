@@ -1,19 +1,22 @@
 ---
-import {getCurrentDriverStandings} from '../../api/standings'
-import { getArticleImage } from '../../api/wikipedia'
-import RankingLayout from '../../layouts/RankingLayout.astro';
+import { getCurrentDriverStandings } from "../../api/standings";
+import { getArticleImage } from "../../api/wikipedia";
+import RankingLayout from "../../layouts/RankingLayout.astro";
 
 const standings = await getCurrentDriverStandings();
-const driversInfo = await Promise.all(standings.map( async ({ Driver: driver, points})  => {
-	const wikiUrlParts = driver.url.split('/');
-	const wikiDriverName = wikiUrlParts[wikiUrlParts.length - 1];
-	const imageUrl = await getArticleImage(wikiDriverName, 120) || "/user.png";
-	return {
-		name: `${driver.givenName} ${driver.familyName}`,
-		points: points,
-		image: imageUrl
-	}
-}))
-
+const driversInfo = await Promise.all(
+  standings.map(async ({ Driver: driver, points }) => {
+    const wikiUrlParts = driver.url.split("/");
+    const wikiDriverName = wikiUrlParts[wikiUrlParts.length - 1];
+    const imageUrl =
+      (await getArticleImage(wikiDriverName, 120)) || "/user.png";
+    return {
+      name: `${driver.givenName} ${driver.familyName}`,
+      points: points,
+      image: imageUrl,
+    };
+  }),
+);
 ---
-<RankingLayout currentRanking='Drivers' itemsInfo={driversInfo}/>
+
+<RankingLayout currentRanking="Drivers" itemsInfo={driversInfo} />

@@ -1,26 +1,28 @@
 ---
-import NextRace from '../../components/NextRaceInfo.astro';
-import RaceInfo from '../../components/RaceResults.astro';
-import Layout from '../../layouts/Layout.astro';
+import NextRace from "../../components/NextRaceInfo.astro";
+import RaceInfo from "../../components/RaceResults.astro";
+import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout title="F1-corner">
-	<section>
-		<h2>Próxima carrera</h2>
-		<NextRace daysText="days" />
-	</section>
-	<RaceInfo race="last" />
+  <section>
+    <h2>Próxima carrera</h2>
+    <NextRace daysText="days" />
+  </section>
+  <RaceInfo race="last" />
 </Layout>
 
 <style>
-section {
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
+  section {
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
 
-html.dark section {
-	box-shadow: rgba(255, 255, 255, 0.35) 0px 0.0625em 0.625em, rgba(255, 255, 255, 0.35) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-}
-
+  html.dark section {
+    box-shadow:
+      rgba(255, 255, 255, 0.35) 0px 0.0625em 0.625em,
+      rgba(255, 255, 255, 0.35) 0px 0.125em 0.5em,
+      rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  }
 </style>

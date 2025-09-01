@@ -1,73 +1,109 @@
 ---
-import LanguagePicker from './LanguagePicker.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
-import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+import LanguagePicker from "./LanguagePicker.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "../i18n/utils";
 import { Image } from "astro:assets";
 import logo from "../../public/logo.svg";
-import '../styles/nav.css'
-import { getAllSeasonRaces } from '../api/races';
+import "../styles/nav.css";
+import { getAllSeasonRaces } from "../api/races";
 
 interface Link {
-	href: string;
-	text: string;
-	links?: Link[];
+  href: string;
+  text: string;
+  links?: Link[];
 }
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
 const allRaces = await getAllSeasonRaces();
-const racesLinks: Link[] = allRaces?.Races.map( race => ({href: translatePath(`/races/${race.round}`), text: race.raceName}) ) as Link[]
+const racesLinks: Link[] = allRaces?.Races.map((race) => ({
+  href: translatePath(`/races/${race.round}`),
+  text: race.raceName,
+})) as Link[];
 
 const sections: Link[] = [
-	{ href: translatePath('/'), text: t('nav.home') },
-	{ href: translatePath('/ranking/drivers'), text: t('nav.ranking'), links: [
-		{href: translatePath('/ranking/drivers'), text: t('nav.ranking.drivers')},
-		{href: translatePath('/ranking/constructors'), text: t('nav.ranking.constructors')}
-	]},
-	{ href: translatePath('/races/last'), text: t('nav.races'), links: racesLinks },
+  { href: translatePath("/"), text: t("nav.home") },
+  {
+    href: translatePath("/ranking/drivers"),
+    text: t("nav.ranking"),
+    links: [
+      {
+        href: translatePath("/ranking/drivers"),
+        text: t("nav.ranking.drivers"),
+      },
+      {
+        href: translatePath("/ranking/constructors"),
+        text: t("nav.ranking.constructors"),
+      },
+    ],
+  },
+  {
+    href: translatePath("/races/last"),
+    text: t("nav.races"),
+    links: racesLinks,
+  },
 ];
 ---
 
 <header>
-	<nav aria-label="Main menu">
-		<input type="checkbox" id="nav-check">
-			<ul class="nav-links">
-				<li>
-					<a href={translatePath('/')} >
-						<Image src={logo} alt="logo: man with a wheel" width="32" height="32"/>
-					</a>
-				</li>
-			{
-				sections.map(({ href, text, links }) => (
-					<li>
-						<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} 
-						rel="prefetch-intent" class:list={[{parent_url: links && links.length > 0}]}>
-							<strong>{text}</strong> &nbsp;
-						</a>
-						{links && 
-						<ul>
-							{links.map(({href, text}) => (
-								<li>
-									<a href={href} aria-current={href === Astro.url.pathname ? 'page' : undefined} rel="prefetch-intent" >
-										<strong>{text}</strong>
-									</a>
-								</li>
-							))}
-						</ul>
-					}
-					</li>
-				))
-			}
-			</ul>
-		<div class="nav-btn">
-			<label for="nav-check">
-			  <span></span>
-			  <span></span>
-			  <span></span>
-			</label>
-		</div>
-		<LanguagePicker currentLang={lang} />
-        <ThemeToggle />
-	</nav>
+  <nav aria-label="Main menu">
+    <input type="checkbox" id="nav-check" />
+    <ul class="nav-links">
+      <li>
+        <a href={translatePath("/")}>
+          <Image
+            src={logo}
+            alt="logo: man with a wheel"
+            width="32"
+            height="32"
+          />
+        </a>
+      </li>
+      {
+        sections.map(({ href, text, links }) => (
+          <li>
+            <a
+              href={href}
+              aria-current={href === Astro.url.pathname ? "page" : undefined}
+              rel="prefetch-intent"
+              class:list={[{ parent_url: links && links.length > 0 }]}
+            >
+              <strong>{text}</strong> &nbsp;
+            </a>
+            {links && (
+              <ul>
+                {links.map(({ href, text }) => (
+                  <li>
+                    <a
+                      href={href}
+                      aria-current={
+                        href === Astro.url.pathname ? "page" : undefined
+                      }
+                      rel="prefetch-intent"
+                    >
+                      <strong>{text}</strong>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <div class="nav-btn">
+      <label for="nav-check">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    </div>
+    <LanguagePicker currentLang={lang} />
+    <ThemeToggle />
+  </nav>
 </header>

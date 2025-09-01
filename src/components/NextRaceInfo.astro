@@ -1,98 +1,117 @@
 ---
-import {getNextRaceData, getRoundData} from '../api/schedule'
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
-import type { Circuit } from '../types';
+import { getNextRaceData, getRoundData } from "../api/schedule";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import type { Circuit } from "../types";
 
-const {raceRound} = Astro.props
+const { raceRound } = Astro.props;
 
-let raceData = null
-if(raceRound) raceData = await getRoundData(raceRound)
+let raceData = null;
+if (raceRound) raceData = await getRoundData(raceRound);
 else raceData = await getNextRaceData();
 
-const { round, Races: races } = raceData
+const { round, Races: races } = raceData;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 let dateString: string = t("next_race.unknown_date");
 let date: string = t("next_race.unknown_date");
 let circuit: Circuit | undefined;
-if(races && races.length > 0) {
-    dateString = `${races[0].date} ${races[0].time}`
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    date = new Date(races[0].date).toLocaleDateString(lang, options);
-    circuit = races[0].Circuit;
+if (races && races.length > 0) {
+  dateString = `${races[0].date} ${races[0].time}`;
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  date = new Date(races[0].date).toLocaleDateString(lang, options);
+  circuit = races[0].Circuit;
 }
-
 ---
 
-<next-race-info id="clock" data-time={dateString} data-daystext={t("next_race.days")} >
-    <div>
-        <article>
-            <h3>{t("next_race.info")}</h3>
-            <ul>
-                <li><strong>{t("next_race.round")}: </strong> {round}</li>
-                <li id="date"><strong>{t("next_race.date")}: </strong> {date}</li>
-                <li>
-                    <strong>{t("circuit")}: </strong> 
-                    {circuit ?
-                    (<a href={circuit?.url}>{circuit?.circuitName} ({circuit?.Location.country})</a>)
-                    :(<span>{t("next_race.unknown_circuit")}</span>)</li>
-                    }
-            </ul>
-        </article>
-        <article>
-            <h3>{t("next_race.time_remaining")}</h3>
-            <div id="time">{dateString}</div>
-        </article>
-    </div>
+<next-race-info
+  id="clock"
+  data-time={dateString}
+  data-daystext={t("next_race.days")}
+>
+  <div>
+    <article>
+      <h3>{t("next_race.info")}</h3>
+      <ul>
+        <li><strong>{t("next_race.round")}: </strong> {round}</li>
+        <li id="date"><strong>{t("next_race.date")}: </strong> {date}</li>
+        <li>
+          <strong>{t("circuit")}: </strong>
+          {
+            circuit ? (
+              <a href={circuit?.url}>
+                {circuit?.circuitName} ({circuit?.Location.country})
+              </a>
+            ) : (
+              <span>{t("next_race.unknown_circuit")}</span>
+            )
+          }
+        </li>
+      </ul>
+    </article>
+    <article>
+      <h3>{t("next_race.time_remaining")}</h3>
+      <div id="time">{dateString}</div>
+    </article>
+  </div>
 </next-race-info>
 
-
 <script is:inline>
-document.addEventListener('astro:page-load', () => {
-    class NextRaceInfo extends HTMLElement {
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      class NextRaceInfo extends HTMLElement {
         constructor() {
-            super();
-            const component = this;
-            this.daystext = this.dataset.daystext
-            if(isDate(this.dataset.time)) {
-                this.time = new Date(this.dataset.time);
-                this.remainingMs = this.time - new Date();
-                this.updateTime(component);
-                this.timerID = setInterval(() => this.updateTime(component), 1000);
-            } else {
-                component.querySelector('#time').innerHTML = this.dataset.time;
-            }
+          super();
+          const component = this;
+          this.daystext = this.dataset.daystext;
+          if (isDate(this.dataset.time)) {
+            this.time = new Date(this.dataset.time);
+            this.remainingMs = this.time - new Date();
+            this.updateTime(component);
+            this.timerID = setInterval(() => this.updateTime(component), 1000);
+          } else {
+            component.querySelector("#time").innerHTML = this.dataset.time;
+          }
         }
 
         updateTime(nextRaceInfo) {
-            const time = nextRaceInfo.querySelector('#time');
-            if (time) {
-                nextRaceInfo.remainingMs -= 1000;
-                time.innerHTML = dhm(nextRaceInfo.remainingMs, nextRaceInfo.daystext);
-                if(nextRaceInfo.remainingMs < 1000) {
-                    clearInterval(nextRaceInfo.timerID);
-                    time.innerHTML = "The race is on!";
-                }
-            } else {
-                clearInterval(nextRaceInfo.timerID)
+          const time = nextRaceInfo.querySelector("#time");
+          if (time) {
+            nextRaceInfo.remainingMs -= 1000;
+            time.innerHTML = dhm(
+              nextRaceInfo.remainingMs,
+              nextRaceInfo.daystext,
+            );
+            if (nextRaceInfo.remainingMs < 1000) {
+              clearInterval(nextRaceInfo.timerID);
+              time.innerHTML = "The race is on!";
             }
-        };
-    }
-    customElements.get('next-race-info') || customElements.define('next-race-info', NextRaceInfo);
+          } else {
+            clearInterval(nextRaceInfo.timerID);
+          }
+        }
+      }
+      customElements.get("next-race-info") ||
+        customElements.define("next-race-info", NextRaceInfo);
+    },
+    { once: true },
+  );
 
-}, { once: true })
-
-
-function zeroPadding(num, digit) {
-    var zero = '';
+  function zeroPadding(num, digit) {
+    var zero = "";
     for (var i = 0; i < digit; i++) {
-        zero += '0';
+      zero += "0";
     }
     return (zero + num).slice(-digit);
-}
+  }
 
-function dhm(ms, daysText) {
+  function dhm(ms, daysText) {
     const days = Math.floor(ms / (24 * 60 * 60 * 1000));
     const daysms = ms % (24 * 60 * 60 * 1000);
     const hours = Math.floor(daysms / (60 * 60 * 1000));
@@ -100,62 +119,74 @@ function dhm(ms, daysText) {
     const minutes = Math.floor(hoursms / (60 * 1000));
     const minutesms = ms % (60 * 1000);
     const sec = Math.floor(minutesms / 1000);
-    return zeroPadding(days) + " " + daysText + " " + zeroPadding(hours, 2) + ":" + zeroPadding(minutes, 2) + ":" + zeroPadding(sec, 2);
-}
+    return (
+      zeroPadding(days) +
+      " " +
+      daysText +
+      " " +
+      zeroPadding(hours, 2) +
+      ":" +
+      zeroPadding(minutes, 2) +
+      ":" +
+      zeroPadding(sec, 2)
+    );
+  }
 
-function isDate(date) {
-    return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
-}
-
+  function isDate(date) {
+    return new Date(date) !== "Invalid Date" && !isNaN(new Date(date));
+  }
 </script>
 
 <style>
-next-race-info > div {
+  next-race-info > div {
     display: flex;
     justify-content: space-between;
     padding: 0 2em 1em 2em;
     max-width: 70vw;
     margin: auto;
-}
+  }
 
-ul {
+  ul {
     text-align: start;
     padding-left: 0;
-}
+  }
 
-ul > li {
+  ul > li {
     letter-spacing: 0.1em;
     font-size: max(2vw, 12px);
-}
-p {
+  }
+  p {
     margin: 0;
     padding: 0;
-}
-#clock {
+  }
+  #clock {
     transform: translate(-50%, -50%);
-    text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
+    text-shadow:
+      0 0 20px rgba(189, 116, 116, 1),
+      0 0 20px rgba(10, 175, 230, 0);
     #time {
-        letter-spacing: 0.05em;
-        font-size: max(3vw, 20px);
-        padding: 5px 0;
+      letter-spacing: 0.05em;
+      font-size: max(3vw, 20px);
+      padding: 5px 0;
     }
     .text {
-        letter-spacing: 0.1em;
-        font-size: 12px;
-        padding: 20px 0 0;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+      padding: 20px 0 0;
     }
-}
+  }
 
-html.dark #clock {
-    text-shadow: 0 0 20px rgba(189, 116, 116, 1),  0 0 20px rgba(10, 175, 230, 0);
-}
-a {
+  html.dark #clock {
+    text-shadow:
+      0 0 20px rgba(189, 116, 116, 1),
+      0 0 20px rgba(10, 175, 230, 0);
+  }
+  a {
     text-decoration: none;
-	color: inherit;
-}
+    color: inherit;
+  }
 
-a:hover {
+  a:hover {
     filter: opacity(0.7);
-}
-
+  }
 </style>

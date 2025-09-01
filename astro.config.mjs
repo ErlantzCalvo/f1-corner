@@ -15,5 +15,4 @@ export default defineConfig({
     domains: ["upload.wikimedia.org"],
     remotePatterns: [{ protocol: "https" }],
   },
- 
 });

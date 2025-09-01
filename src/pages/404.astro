@@ -3,12 +3,13 @@ import { Image } from "astro:assets";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import Layout from "../layouts/Layout.astro";
 
-import magic from "../../public/my_dad.jpg"
+import magic from "../../public/my_dad.jpg";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
+
 <Layout title="404">
-<h2>{t('404.title')}</h2>
-<h4>{t('404.subtitle')}</h2>
-<Image src={magic} alt="Fernando Alonso" width={400} height={400} />
+  <h2>{t("404.title")}</h2>
+  <h4>{t("404.subtitle")}</h4>
+  <Image src={magic} alt="Fernando Alonso" width={400} height={400} />
 </Layout>

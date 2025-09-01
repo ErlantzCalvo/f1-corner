@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 interface Item {
   name: string;
   points: string;
@@ -32,30 +32,32 @@ const t = useTranslations(lang);
       </tr>
     </thead>
     <tbody>
-    {
-      items?.map((item, idx) => (
-        <tr
-          class:list={[
-            { first: idx === 0, second: idx === 1, third: idx === 2 },
-          ]}
-        >
-          <td class="number">{idx + 1}</td>
-          <td class="driver-image">
-            <img src={item.image!} alt={item.name} height="60" loading="lazy"/>
-          </td>
-          <td class="name">
-            {item.name}
-          </td>
-          <td class="points">{item.points}</td>
-        </tr>
-      ))
-    }
+      {
+        items?.map((item, idx) => (
+          <tr
+            class:list={[
+              { first: idx === 0, second: idx === 1, third: idx === 2 },
+            ]}
+          >
+            <td class="number">{idx + 1}</td>
+            <td class="driver-image">
+              <img
+                src={item.image!}
+                alt={item.name}
+                height="60"
+                loading="lazy"
+              />
+            </td>
+            <td class="name">{item.name}</td>
+            <td class="points">{item.points}</td>
+          </tr>
+        ))
+      }
     </tbody>
   </table>
 </div>
 
 <style>
-  
   #leaderboard {
     width: 100%;
     position: relative;
@@ -112,12 +114,12 @@ const t = useTranslations(lang);
   .driver-image {
     width: 80px;
   }
-  
+
   .driver-image > img {
     position: relative;
     transition: all 0.2s ease-in-out;
   }
-  
+
   .driver-image > img:hover {
     position: relative;
     transform: scale(3);
@@ -139,5 +141,4 @@ const t = useTranslations(lang);
     justify-content: flex-end;
     align-items: center;
   }
-
 </style>

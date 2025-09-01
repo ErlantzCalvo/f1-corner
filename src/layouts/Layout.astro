@@ -1,37 +1,35 @@
---- 
-import '@fontsource/titillium-web';
-import Nav from '../components/Nav.astro';
-import { getLangFromUrl } from '../i18n/utils';
-import '../styles/globals.css';
-import { ViewTransitions } from 'astro:transitions';
+---
+import "@fontsource/titillium-web";
+import Nav from "../components/Nav.astro";
+import { getLangFromUrl } from "../i18n/utils";
+import "../styles/globals.css";
+import { ViewTransitions } from "astro:transitions";
 
 const lang = getLangFromUrl(Astro.url);
 
-
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<ViewTransitions />
-	</head>
-	<body >
-		<Nav transition:persist/>
-		<main transition:animate="slide">
-			<slot />
-		</main>
-		<footer>
-		</footer>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <Nav transition:persist />
+    <main transition:animate="slide">
+      <slot />
+    </main>
+    <footer></footer>
+  </body>
 </html>

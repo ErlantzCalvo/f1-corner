@@ -1,28 +1,25 @@
 ---
-import { getAllSeasonRaces } from '../../api/races';
-import Layout from '../../layouts/Layout.astro';
-import RaceResults from '../../components/RaceResults.astro'
-import NextRaceInfo from '../../components/NextRaceInfo.astro';
+import { getAllSeasonRaces } from "../../api/races";
+import Layout from "../../layouts/Layout.astro";
+import RaceResults from "../../components/RaceResults.astro";
+import NextRaceInfo from "../../components/NextRaceInfo.astro";
 
 export async function getStaticPaths() {
-    const allRaces = await getAllSeasonRaces();
-    const allLinks = allRaces?.Races.map( race => {
-        const dateOfRace = new Date(`${race.date} ${race.time}`)
-        const done = dateOfRace < new Date()
-        return {params: { round: race.round}, props: {done}}
-    }) 
-    allLinks?.push({params: { round: 'last'}, props: {done: true}})
-    return allLinks
+  const allRaces = await getAllSeasonRaces();
+  const allLinks = allRaces?.Races.map((race) => {
+    const dateOfRace = new Date(`${race.date} ${race.time}`);
+    const done = dateOfRace < new Date();
+    return { params: { round: race.round }, props: { done } };
+  });
+  allLinks?.push({ params: { round: "last" }, props: { done: true } });
+  return allLinks;
 }
 
-const {round} = Astro.params;
-const {done} = Astro.props;
-
-
+const { round } = Astro.params;
+const { done } = Astro.props;
 ---
+
 <Layout title="Race">
-    {done && 
-        <RaceResults race={round}/>
-    }
-    {!done && <NextRaceInfo raceRound={round} />}
+  {done && <RaceResults race={round} />}
+  {!done && <NextRaceInfo raceRound={round} />}
 </Layout>

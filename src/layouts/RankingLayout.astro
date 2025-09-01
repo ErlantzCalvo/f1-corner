@@ -1,38 +1,38 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Leaderboard from '../components/Leaderboard.astro';
-import Podium from '../components/Podium.astro';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import Layout from "../layouts/Layout.astro";
+import Leaderboard from "../components/Leaderboard.astro";
+import Podium from "../components/Podium.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 interface Props {
-    currentRanking: string;
-    itemsInfo: {
-        name: string,
-		points: string,
-		image: string | null
-    }[]
+  currentRanking: string;
+  itemsInfo: {
+    name: string;
+    points: string;
+    image: string | null;
+  }[];
 }
 
-const {currentRanking, itemsInfo} = Astro.props;
+const { currentRanking, itemsInfo } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title='Ranking'>
-	<h1>{t('nav.ranking')} ({currentRanking})</h1>
-	<section>
-		<Podium first={itemsInfo.length > 0? itemsInfo[0] : null} 
-			second={itemsInfo.length > 1? itemsInfo[1] : null} 
-			third={itemsInfo.length > 2? itemsInfo[2] : null}/>
-		<Leaderboard items={itemsInfo}/>
-	</section>
+<Layout title="Ranking">
+  <h1>{t("nav.ranking")} ({currentRanking})</h1>
+  <section>
+    <Podium
+      first={itemsInfo.length > 0 ? itemsInfo[0] : null}
+      second={itemsInfo.length > 1 ? itemsInfo[1] : null}
+      third={itemsInfo.length > 2 ? itemsInfo[2] : null}
+    />
+    <Leaderboard items={itemsInfo} />
+  </section>
 </Layout>
 
 <style>
-	html {
-		overflow-x: hidden;
-	}
-
+  html {
+    overflow-x: hidden;
+  }
 </style>
-
