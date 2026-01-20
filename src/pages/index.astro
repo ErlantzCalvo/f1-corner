@@ -2,9 +2,36 @@
 import NextRace from "../components/NextRaceInfo.astro";
 import RaceInfo from "../components/RaceResults.astro";
 import Layout from "../layouts/Layout.astro";
+import { getNextRaceData } from "../api/schedule";
+import StructuredData from "../components/StructuredData.astro";
+
+const nextRaceData = await getNextRaceData();
+const race = nextRaceData?.Races?.[0];
+
+const structuredData = race
+  ? {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      name: race.raceName,
+      startDate: `${race.date}T${race.time}`,
+      location: {
+        "@type": "Place",
+        name: race.Circuit.circuitName,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: race.Circuit.Location.locality,
+          addressCountry: race.Circuit.Location.country,
+        },
+      },
+    }
+  : null;
 ---
 
-<Layout title="F1-corner">
+<Layout
+  title="Home"
+  description="Follow the latest Formula 1 standings, race results, and championship rankings. See the countdown to the next F1 race and results from the last Grand Prix."
+>
+  {structuredData && <StructuredData data={structuredData} />}
   <section>
     <h2>Next Race</h2>
     <NextRace daysText="days" />

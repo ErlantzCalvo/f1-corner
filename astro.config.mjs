@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import vercelStatic from "@astrojs/vercel/static";
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,4 +16,5 @@ export default defineConfig({
     domains: ["upload.wikimedia.org"],
     remotePatterns: [{ protocol: "https" }],
   },
+  integrations: [sitemap()],
 });

@@ -4,25 +4,76 @@ import Nav from "../components/Nav.astro";
 import { getLangFromUrl } from "../i18n/utils";
 import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
+import StructuredData from "../components/StructuredData.astro";
 
 const lang = getLangFromUrl(Astro.url);
+const siteUrl = "https://f1-corner-iota.vercel.app";
 
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article" | "sports-event";
+  noIndex?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Follow the latest Formula 1 standings, race results, and championship rankings. Track your favorite drivers and constructors throughout the season.",
+  image = "/logo.svg",
+  type = "website",
+  noIndex = false,
+} = Astro.props;
+
+const fullTitle = `${title} | F1-corner`;
+const fullImageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="F1-corner" />
+    <meta property="og:locale" content={lang === "es" ? "es_ES" : "en_US"} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImageUrl} />
+
+    <StructuredData
+      data={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        url: siteUrl,
+        name: "F1-corner",
+        description,
+        potentialAction: [
+          {
+            "@type": "SearchAction",
+            target: `${siteUrl}/search?q={search_term_string}`,
+            "query-input": "required name=search_term_string",
+          },
+        ],
+      }}
+    />
+
     <ViewTransitions />
   </head>
   <body>

@@ -1,6 +1,7 @@
 ---
 import { getCurrentContructorStandings } from "../../../api/standings";
 import RankingLayout from "../../../layouts/RankingLayout.astro";
+import StructuredData from "../../../components/StructuredData.astro";
 
 const standings = await getCurrentContructorStandings();
 const constructorsInfo = await Promise.all(
@@ -12,6 +13,27 @@ const constructorsInfo = await Promise.all(
     };
   }),
 );
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: standings.map((standing, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "SportsTeam",
+      name: standing.Constructor.name,
+      url: standing.Constructor.url,
+    },
+  })),
+};
 ---
 
-<RankingLayout currentRanking="Escuderías" itemsInfo={constructorsInfo} />
+<RankingLayout
+  currentRanking="Escuderías"
+  itemsInfo={constructorsInfo}
+  title="Campeonato de Constructores"
+  description="Clasificación actual del campeonato de constructores de Fórmula 1. Consulta los últimos puntos, victorias y rankings de todos los equipos de F1."
+>
+  <StructuredData data={structuredData} />
+</RankingLayout>

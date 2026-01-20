@@ -3,6 +3,8 @@ import { getAllSeasonRaces } from "../../api/races";
 import Layout from "../../layouts/Layout.astro";
 import RaceResults from "../../components/RaceResults.astro";
 import NextRaceInfo from "../../components/NextRaceInfo.astro";
+import StructuredData from "../../components/StructuredData.astro";
+import { getRoundData } from "../../api/schedule";
 
 export async function getStaticPaths() {
   const allRaces = await getAllSeasonRaces();
@@ -17,9 +19,40 @@ export async function getStaticPaths() {
 
 const { round } = Astro.params;
 const { done } = Astro.props;
+
+let raceData = null;
+if (round !== "last") {
+  raceData = await getRoundData(parseInt(round));
+}
+
+const raceName = raceData?.Races?.[0]?.raceName || "Race";
+const circuit = raceData?.Races?.[0]?.Circuit;
+
+const structuredData = raceData
+  ? {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      name: raceName,
+      startDate: `${raceData.Races[0].date}T${raceData.Races[0].time}`,
+      location: {
+        "@type": "Place",
+        name: circuit?.circuitName,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: circuit?.Location.locality,
+          addressCountry: circuit?.Location.country,
+        },
+      },
+    }
+  : null;
 ---
 
-<Layout title="Race">
+<Layout
+  title={`${round !== "last" ? `Round ${round}` : "Last"} Race`}
+  description={structuredData ? `${raceName} at ${circuit?.circuitName}, ${circuit?.Location.country}. Full race results, positions, and fastest lap data.` : "Formula 1 race results and information."}
+  type="sports-event"
+>
+  {structuredData && <StructuredData data={structuredData} />}
   {done && <RaceResults race={round} />}
   {!done && <NextRaceInfo raceRound={round} />}
 </Layout>

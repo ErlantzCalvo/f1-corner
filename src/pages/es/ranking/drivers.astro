@@ -2,6 +2,7 @@
 import { getCurrentDriverStandings } from "../../../api/standings";
 import { getArticleImage } from "../../../api/wikipedia";
 import RankingLayout from "../../../layouts/RankingLayout.astro";
+import StructuredData from "../../../components/StructuredData.astro";
 
 const standings = await getCurrentDriverStandings();
 const driversInfo = await Promise.all(
@@ -17,6 +18,31 @@ const driversInfo = await Promise.all(
     };
   }),
 );
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: standings.map((standing, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Person",
+      name: `${standing.Driver.givenName} ${standing.Driver.familyName}`,
+      url: standing.Driver.url,
+      affiliation: {
+        "@type": "Organization",
+        name: standing.Constructors[0].name,
+      },
+    },
+  })),
+};
 ---
 
-<RankingLayout currentRanking="Pilotos" itemsInfo={driversInfo} />
+<RankingLayout
+  currentRanking="Pilotos"
+  itemsInfo={driversInfo}
+  title="Campeonato de Pilotos"
+  description="Clasificación actual del campeonato de pilotos de Fórmula 1. Consulta los últimos puntos, victorias y rankings de todos los pilotos de F1."
+>
+  <StructuredData data={structuredData} />
+</RankingLayout>

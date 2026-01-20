@@ -8,7 +8,11 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title="404">
+<Layout
+  title="404 - Page Not Found"
+  description="The page you're looking for doesn't exist. Navigate back to the F1-corner homepage to find Formula 1 standings, race results, and more."
+  noIndex={true}
+>
   <h2>{t("404.title")}</h2>
   <h4>{t("404.subtitle")}</h4>
   <Image src={magic} alt="Fernando Alonso" width={400} height={400} />

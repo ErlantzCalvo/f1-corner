@@ -11,15 +11,23 @@ interface Props {
     points: string;
     image: string | null;
   }[];
+  title?: string;
+  description?: string;
 }
 
-const { currentRanking, itemsInfo } = Astro.props;
+const {
+  currentRanking,
+  itemsInfo,
+  title = "Ranking",
+  description = "",
+} = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title="Ranking">
+<Layout title={title} description={description}>
+  <slot />
   <h1>{t("nav.ranking")} ({currentRanking})</h1>
   <section>
     <Podium

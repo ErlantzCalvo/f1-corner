@@ -1,0 +1,49 @@
+---
+interface WebSiteData {
+  url: string;
+  name: string;
+  description: string;
+  potentialAction?: {
+    type: string;
+    target: string;
+    "query-input": string;
+  }[];
+}
+
+interface SportsEvent {
+  name: string;
+  startDate: string;
+  location: {
+    type: string;
+    name: string;
+    address: {
+      type: string;
+      addressLocality: string;
+      addressCountry: string;
+    };
+  };
+  competitor: {
+    type: string;
+    name: string;
+    url?: string;
+  }[];
+}
+
+interface Person {
+  name: string;
+  url: string;
+  image?: string;
+  affiliation?: {
+    type: string;
+    name: string;
+  };
+}
+
+interface JSONLDProps {
+  data: WebSiteData | SportsEvent | Person;
+}
+
+const { data } = Astro.props;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(data)} />
