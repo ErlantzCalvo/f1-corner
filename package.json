@@ -13,14 +13,14 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/vercel": "^8.2.11",
+    "@astrojs/vercel": "^9.0.4",
     "@fontsource/titillium-web": "^5.2.8",
-    "astro": "5.13.5",
+    "astro": "5.16.11",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^24.10.9",
+    "@types/node": "^25.0.9",
     "prettier": "^3.8.0",
     "prettier-plugin-astro": "^0.14.1"
   }
