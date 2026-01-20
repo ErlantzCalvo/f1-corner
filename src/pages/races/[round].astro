@@ -49,7 +49,9 @@ const structuredData = raceData
 
 <Layout
   title={`${round !== "last" ? `Round ${round}` : "Last"} Race`}
-  description={structuredData ? `${raceName} at ${circuit?.circuitName}, ${circuit?.Location.country}. Full race results, positions, and fastest lap data.` : "Formula 1 race results and information."}
+  description={structuredData
+    ? `${raceName} at ${circuit?.circuitName}, ${circuit?.Location.country}. Full race results, positions, and fastest lap data.`
+    : "Formula 1 race results and information."}
   type="sports-event"
 >
   {structuredData && <StructuredData data={structuredData} />}
