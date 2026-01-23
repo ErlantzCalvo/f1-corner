@@ -42,14 +42,14 @@ const t = useTranslations(lang);
             <td class="number">{idx + 1}</td>
             <td class="driver-image">
               <img
-                src={item.image!}
-                alt={item.name}
+                src={item?.image!}
+                alt={item?.name}
                 height="60"
                 loading="lazy"
               />
             </td>
-            <td class="name">{item.name}</td>
-            <td class="points">{item.points}</td>
+            <td class="name">{item?.name}</td>
+            <td class="points">{item?.points}</td>
           </tr>
         ))
       }
