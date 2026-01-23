@@ -1,10 +1,13 @@
 import type { Race, RaceInfo } from "../types";
-import { fetchTimeout } from "./utils";
+import { fetchWithTimeout } from "./fetchWithTimeout";
 
 export const getRaceResults = async function (race: string): Promise<Race> {
-  await fetchTimeout();
-  return fetch(`https://api.jolpi.ca/ergast/f1/current/${race}/results.json`)
-    .then((res) => res.json())
+  const response = await fetchWithTimeout(
+    `https://api.jolpi.ca/ergast/f1/current/${race}/results.json`,
+    { timeout: 10000 },
+  );
+  return response
+    .json()
     .then((data) => data as Promise<RaceInfo>)
     .then((data) => data.MRData.RaceTable!.Races[0]);
 };
