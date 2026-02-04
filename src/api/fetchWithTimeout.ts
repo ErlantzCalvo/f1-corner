@@ -13,7 +13,7 @@ export async function fetchWithTimeout(
 ): Promise<Response> {
   const {
     timeout = 20000,
-    retries = 3,
+    retries = 10,
     cache = true,
     backoffMultiplier = 2,
     rateLimitBackoffMultiplier = 5,
