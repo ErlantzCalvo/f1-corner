@@ -8,10 +8,10 @@ import { getRoundData } from "../../../api/schedule";
 
 export async function getStaticPaths() {
   const allRaces = await getAllSeasonRaces();
-  const allLinks = allRaces?.Races.map((race) => {
+  const allLinks = allRaces?.Races.map((race, i) => {
     const dateOfRace = new Date(`${race.date} ${race.time}`);
     const done = dateOfRace < new Date();
-    return { params: { round: race.round }, props: { done } };
+    return { params: { round: race.round || (i + 1) }, props: { done } };
   });
   allLinks?.push({ params: { round: "last" }, props: { done: true } });
   return allLinks;
@@ -27,13 +27,14 @@ if (round !== "last") {
 
 const raceName = raceData?.Races?.[0]?.raceName || "Carrera";
 const circuit = raceData?.Races?.[0]?.Circuit;
+const raceDate = `${raceData?.Races?.[0]?.date}T${raceData?.Races?.[0]?.time}`;
 
-const structuredData = raceData
+const structuredData = raceData?.Races
   ? {
       "@context": "https://schema.org",
       "@type": "SportsEvent",
       name: raceName,
-      startDate: `${raceData.Races[0].date}T${raceData.Races[0].time}`,
+      startDate: raceDate,
       location: {
         "@type": "Place",
         name: circuit?.circuitName,
